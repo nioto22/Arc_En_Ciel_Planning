@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+        <FrameLayout
+            android:id="@+id/main_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/main_bottom_nav_stroke">
+        </FrameLayout>
+        <View
+            android:id="@+id/main_bottom_nav_stroke"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greys_100"
+            app:layout_constraintBottom_toTopOf="@+id/main_bottom_nav"
+            />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/main_bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="64dp"
+            android:weightSum="10"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/greys_50"
+            >
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/tab_home_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/tab_home_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_menu_home"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tab_home_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/tab_home"
+                    android:textColor="@color/colorPrimary"
+                    android:includeFontPadding="false"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/background_plus_button"
+                    android:src="@drawable/ic_plus" />
+            </RelativeLayout>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/tab_planning_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/tab_planning_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_menu_calendar"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tab_planning_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/tab_calendar"
+                    android:textColor="@color/greys_300"
+                    android:includeFontPadding="false"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <!--   <RelativeLayout
+              android:layout_width="95dp"
+              android:layout_height="95dp"
+              android:padding="1dp"
+              android:layout_marginBottom="10dp"
+              android:background="@drawable/background_plus_button_firstside"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent"
+              >
+
+             <androidx.appcompat.widget.AppCompatImageView
+                  android:layout_width="82dp"
+                  android:layout_height="82dp"
+                  android:layout_centerInParent="true"
+                  android:background="@drawable/background_plus_button"
+                  android:clickable="true"
+                  android:focusable="true"
+                  android:src="@drawable/ic_plus" />
+
+        </RelativeLayout>
+-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

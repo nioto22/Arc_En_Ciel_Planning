@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/home_top_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/home_user_avatar_button"
+            android:gravity="start"
+            android:fontFamily="@font/sf_pro_display_bold"
+            android:text="Bonjour Martine "
+            android:textColor="@color/black"
+            android:textSize="32sp" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/home_user_avatar_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_user_avatar"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/background_home_avatar"
+            android:padding="10dp"
+            android:src="@drawable/ic_avatar" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_user_avatar_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/sf_pro_text_regular"
+                android:text="Voir profil"
+                />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/information_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="start"
+        android:text="Informations : "
+        android:textColor="@color/greys_300"
+        android:fontFamily="@font/sf_pro_display_semibold"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/home_top_container" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_information_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/information_title"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_view_home_alert" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/planning_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        android:gravity="start"
+        android:text="Vos prochains événements : "
+        android:textColor="@color/greys_300"
+        android:fontFamily="@font/sf_pro_display_semibold"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/home_information_recyclerview" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_planning_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/planning_title"
+        tools:itemCount="5" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

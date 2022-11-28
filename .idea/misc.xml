@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/background_alert_container.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/background_alert_container_assiduity.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/background_alert_container_generale.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/background_alert_container_shop.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/background_alert_container_team.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/background_alert_container_urgency.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/background_alert_icon.xml" value="0.227" />
+        <entry key="app/src/main/res/drawable/background_calendar_day.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/background_calendar_dot.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/background_half_shape.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/background_home_avatar.xml" value="0.227" />
+        <entry key="app/src/main/res/drawable/background_home_top_container.xml" value="0.227" />
+        <entry key="app/src/main/res/drawable/background_plus_button.xml" value="0.227" />
+        <entry key="app/src/main/res/drawable/background_plus_button_firstside.xml" value="0.227" />
+        <entry key="app/src/main/res/drawable/background_plus_button_outside.xml" value="0.227" />
+        <entry key="app/src/main/res/drawable/background_white_button.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_assiduity.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_chevron.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_chevron_assiduity.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_chevron_generale.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_chevron_shop.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_chevron_team.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_chevron_urgency.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_info.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_shopping.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_team.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_alert_urgency.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_balert_shopping.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_chevron_right.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_menu_calendar.xml" value="0.227" />
+        <entry key="app/src/main/res/layout/activity_fullscreen.xml" value="0.3182291666666667" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.28069152638800493" />
+        <entry key="app/src/main/res/layout/fragment_planning.xml" value="0.3182291666666667" />
+        <entry key="app/src/main/res/layout/item_view_home_alert.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/modal_new_event.xml" value="0.26036767849508335" />
+        <entry key="app/src/main/res/layout/view_calendar_day.xml" value="0.375" />
+        <entry key="app/src/main/res/menu/main_bottom_navigation_menu.xml" value="0.3171875" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

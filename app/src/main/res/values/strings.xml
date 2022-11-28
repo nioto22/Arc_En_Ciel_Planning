@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Arc En Ciel Planning</string>
+    <string name="tab_calendar">Planning</string>
+    <string name="tab_home">Informations</string>
+    <string name="alert_generale">Information générale</string>
+    <string name="alert_team">Information d\'équipe</string>
+    <string name="alert_shop">Information magasin</string>
+    <string name="alert_urgency">Information importante</string>
+    <string name="alert_assiduity">Rappel de présence</string>
+</resources>
