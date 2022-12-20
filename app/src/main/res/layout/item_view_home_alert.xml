@@ -34,7 +34,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:gravity="start"
                 android:text="Information générale"
-                android:textColor="@color/greys_300"
+                android:textColor="@color/white"
                 android:textSize="17sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -42,7 +42,7 @@
             android:id="@+id/alert_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:gravity="start"
             android:text="Fermeture du magasin"
             android:textColor="@color/white"
@@ -51,20 +51,23 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/alert_body_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:gravity="start"
-            android:text="Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023"
-            android:textColor="@color/greys_300"
-            android:textSize="17sp" />
+            android:maxLines="2"
+            android:text="Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023 \n Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023"
+            android:textColor="@color/white"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:textSize="17sp"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/alert_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/background_white_button"
             android:padding="2dp"
             android:src="@drawable/ic_chevron_right" />

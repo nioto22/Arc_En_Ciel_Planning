@@ -69,7 +69,7 @@ class NewEventModal : BottomSheetDialogFragment() {
         bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         bottomSheetDialog.setOnShowListener { dialogInterface: DialogInterface ->
             val dialog = dialogInterface as BottomSheetDialog
-            val bottomSheet = dialog.findViewById<FrameLayout>(R.id.design_bottom_sheet)
+            val bottomSheet = dialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.let { it ->
                 mBehavior = BottomSheetBehavior.from(it)
                 mBehavior.state = BottomSheetBehavior.STATE_EXPANDED

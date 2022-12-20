@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.aprouxdev.arcencielplanning.R
-import com.aprouxdev.arcencielplanning.models.Alert
+import com.aprouxdev.arcencielplanning.data.models.Alert
 
 interface AlertCallback {
     fun onAlertClicked(alert: Alert)

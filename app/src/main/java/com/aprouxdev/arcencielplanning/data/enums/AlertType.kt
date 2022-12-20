@@ -1,6 +1,7 @@
-package com.aprouxdev.arcencielplanning.models
+package com.aprouxdev.arcencielplanning.data.enums
 
 import com.aprouxdev.arcencielplanning.R
+
 
 enum class AlertType(val text: Int, val icon: Int, val color: Int, val background: Int, val chevronIcon: Int) {
     General(text= R.string.alert_generale, icon= R.drawable.ic_alert_info, color= R.color.myOrange, background = R.drawable.background_alert_container_generale, chevronIcon= R.drawable.ic_alert_chevron_generale),
@@ -10,10 +11,3 @@ enum class AlertType(val text: Int, val icon: Int, val color: Int, val backgroun
     Assiduity(text= R.string.alert_assiduity, icon= R.drawable.ic_alert_assiduity, color= R.color.alert_yellow, background = R.drawable.background_alert_container_assiduity, chevronIcon= R.drawable.ic_alert_chevron_assiduity)
 
 }
-data class Alert(
-    val id:Int,
-    val type: AlertType,
-    val title: String,
-    val body: String,
-    val endDate: String
-)

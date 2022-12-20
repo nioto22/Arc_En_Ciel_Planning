@@ -8,14 +8,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import com.aprouxdev.arcencielplanning.adapters.AlertAdapter
-import com.aprouxdev.arcencielplanning.adapters.AlertCallback
+import com.aprouxdev.arcencielplanning.adapters.*
+import com.aprouxdev.arcencielplanning.data.enums.AlertType
+import com.aprouxdev.arcencielplanning.data.enums.Teams
+import com.aprouxdev.arcencielplanning.data.mock.MockData
 import com.aprouxdev.arcencielplanning.databinding.FragmentHomeBinding
-import com.aprouxdev.arcencielplanning.models.Alert
-import com.aprouxdev.arcencielplanning.models.AlertType
+import com.aprouxdev.arcencielplanning.data.models.Alert
+import com.aprouxdev.arcencielplanning.data.models.Event
 
 
-class HomeFragment : Fragment(), AlertCallback {
+class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
 
     companion object {
         const val TAG = "HomeFragment"
@@ -32,6 +34,7 @@ class HomeFragment : Fragment(), AlertCallback {
     private val binding get() = requireNotNull(_binding)
 
     private lateinit var mAlertAdapter: AlertAdapter
+    private lateinit var mHomeEventContainerAdapter: HomeEventContainerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +49,7 @@ class HomeFragment : Fragment(), AlertCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupInformationRecyclerView()
+        setupPlanningRecyclerView()
     }
 
     override fun onDestroy() {
@@ -55,12 +59,7 @@ class HomeFragment : Fragment(), AlertCallback {
 
 
     private fun setupInformationRecyclerView() {
-        val alertList = listOf(
-            Alert(id = 1, type = AlertType.General, title = "Information Noël", body = "La braderie de noël aura lieu à l'arande le 9 décambre prochain ! \n N'oubliez pas de prévenir vos proches pour nous donner un coup de main le vendredi soir.", endDate = "01012023"),
-        Alert(id = 2, type = AlertType.Urgency, title = "Attention urgent", body = "Il manque trois bénévoles pour le samedi 12 Novembre. \nCliquez ici pour vous inscrire", endDate = "01012023"),
-        Alert(id = 3, type = AlertType.Team, title = "Tri des jouets", body = "Salut l'équipe, pour information des cartons de puzzle sont à vérifier dans le local", endDate = "01012023"),
-        Alert(id = 4, type = AlertType.Shop, title = "Vacances de la Toussaint", body = "Le magasin sera fermé les samedis 23 Octobre et 2 Novembre", endDate = "01012023"),
-        Alert(id = 5, type = AlertType.Assiduity, title = "On ne te vois plus !?", body = "On espère que tu vas bien ? \n Petit rappel : il est demandé de faire au moins un samedi par mois en tant que bénévole au magasin", endDate = "01012023"))
+        val alertList = listOf(MockData.alert1, MockData.alert2, MockData.alert3, MockData.alert4, MockData.alert5)
 
          with(binding.homeInformationRecyclerview) {
              layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -73,6 +72,31 @@ class HomeFragment : Fragment(), AlertCallback {
 
     override fun onAlertClicked(alert: Alert) {
         Toast.makeText(context, "Alert : ${alert.title}", Toast.LENGTH_SHORT).show()
+    }
+
+
+
+
+    private fun setupPlanningRecyclerView() {
+
+        val yourEventList = listOf<HomeEventData>(
+            HomeEventData("22 Dec. 2022", listOf(MockData.event1, MockData.event2)),
+            HomeEventData("01 Jan. 2023", listOf(MockData.event3)),
+            HomeEventData("02 Jan. 2023", listOf(MockData.event4, MockData.event5, MockData.event6)),
+            HomeEventData("12 Jan. 2023", listOf(MockData.event7)),
+        )
+        with(binding.homePlanningRecyclerview) {
+            layoutManager = LinearLayoutManager(context)
+            mHomeEventContainerAdapter = HomeEventContainerAdapter(
+                data = yourEventList,
+                listener = this@HomeFragment
+            )
+            adapter = mHomeEventContainerAdapter
+        }
+    }
+
+    override fun onHomeEventClicked(event: Event) {
+        Toast.makeText(context, "Event : ${event.title}", Toast.LENGTH_SHORT).show()
     }
 
 }
