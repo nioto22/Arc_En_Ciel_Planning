@@ -8,11 +8,11 @@ import com.aprouxdev.arcencielplanning.data.models.Event
 
 class MockData {
     companion object {
-        val alert1 = Alert(id = 1, type = AlertType.General, title = "Information Noël", body = "La braderie de noël aura lieu à l'arande le 9 décambre prochain ! \n N'oubliez pas de prévenir vos proches pour nous donner un coup de main le vendredi soir.", endDate = "01012023")
-        val alert2 = Alert(id = 2, type = AlertType.Urgency, title = "Attention urgent", body = "Il manque trois bénévoles pour le samedi 12 Novembre. \nCliquez ici pour vous inscrire", endDate = "01012023")
-        val alert3 = Alert(id = 3, type = AlertType.Team, title = "Tri des jouets", body = "Salut l'équipe, pour information des cartons de puzzle sont à vérifier dans le local", endDate = "01012023")
-        val alert4 = Alert(id = 4, type = AlertType.Shop, title = "Vacances de la Toussaint", body = "Le magasin sera fermé les samedis 23 Octobre et 2 Novembre", endDate = "01012023")
-        val alert5 = Alert(id = 5, type = AlertType.Assiduity, title = "On ne te vois plus !?", body = "On espère que tu vas bien ? \n Petit rappel : il est demandé de faire au moins un samedi par mois en tant que bénévole au magasin", endDate = "01012023")
+        val alert1 = Alert(id = "1", type = AlertType.General, title = "Information Noël", body = "La braderie de noël aura lieu à l'arande le 9 décambre prochain ! \n N'oubliez pas de prévenir vos proches pour nous donner un coup de main le vendredi soir.", endDate = "01012023")
+        val alert2 = Alert(id = "2", type = AlertType.Urgency, title = "Attention urgent", body = "Il manque trois bénévoles pour le samedi 12 Novembre. \nCliquez ici pour vous inscrire", endDate = "01012023")
+        val alert3 = Alert(id = "3", type = AlertType.Team, title = "Tri des jouets", body = "Salut l'équipe, pour information des cartons de puzzle sont à vérifier dans le local", endDate = "01012023")
+        val alert4 = Alert(id = "4", type = AlertType.Shop, title = "Vacances de la Toussaint", body = "Le magasin sera fermé les samedis 23 Octobre et 2 Novembre", endDate = "01012023")
+        val alert5 = Alert(id = "5", type = AlertType.Assiduity, title = "On ne te vois plus !?", body = "On espère que tu vas bien ? \n Petit rappel : il est demandé de faire au moins un samedi par mois en tant que bénévole au magasin", endDate = "01012023")
 
 
 

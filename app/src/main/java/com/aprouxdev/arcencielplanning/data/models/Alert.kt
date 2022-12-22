@@ -4,7 +4,7 @@ import com.aprouxdev.arcencielplanning.R
 import com.aprouxdev.arcencielplanning.data.enums.AlertType
 
 data class Alert(
-    val id:Int,
+    val id: String,
     val type: AlertType,
     val title: String,
     val body: String,
