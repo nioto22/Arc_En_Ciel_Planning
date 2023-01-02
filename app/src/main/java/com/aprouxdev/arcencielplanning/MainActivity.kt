@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.aprouxdev.arcencielplanning.databinding.ActivityMainBinding
 import com.aprouxdev.arcencielplanning.fragments.HomeFragment
 import com.aprouxdev.arcencielplanning.fragments.PlanningFragment
+import com.aprouxdev.arcencielplanning.modals.NewEventModal
 
 
 class MainActivity : AppCompatActivity() {
@@ -104,6 +105,11 @@ class MainActivity : AppCompatActivity() {
                 ?.setTintColor(ContextCompat.getColor(this@MainActivity, planningColor))
             tabPlanningIcon.setImageDrawable(planningIcon)
             tabPlanningText.setTextColor(ContextCompat.getColor(this@MainActivity, planningColor))
+
+            addEventButton.setOnClickListener {
+                val addEventModal = NewEventModal.newInstance()
+                addEventModal.show(supportFragmentManager, NewEventModal.TAG)
+            }
         }
     }
 }

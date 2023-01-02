@@ -29,4 +29,15 @@
     <color name="alert_red">#E5707E</color>
     <color name="greys_700">#3D4148</color>
     <color name="greys_400">#888E9B</color>
+    
+    <color name="team_shop">#E7F8A6</color>
+    <color name="team_braderie">#EAB2A5</color>
+    <color name="team_sorting">#FFFFFF</color>
+    <color name="team_toy">#A5CEEA</color>
+    <color name="team_cleaning">#A5EACD</color>
+    <color name="team_other">#D9D9D9</color>
+    <color name="greys_d9">#D9D9D9</color>
+    <color name="green_validation">#79EC99</color>
+
+
 </resources>

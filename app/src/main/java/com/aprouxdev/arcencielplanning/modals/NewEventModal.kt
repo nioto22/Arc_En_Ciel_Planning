@@ -11,7 +11,9 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentManager
 import com.aprouxdev.arcencielplanning.R
+import com.aprouxdev.arcencielplanning.data.enums.Teams
 import com.aprouxdev.arcencielplanning.databinding.ModalNewEventBinding
+import com.aprouxdev.arcencielplanning.views.TeamsButton
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -121,8 +123,18 @@ class NewEventModal : BottomSheetDialogFragment() {
 
 
     private fun setupUiViews() {
+        setupTeamsButton()
 
+    }
 
+    private fun setupTeamsButton() {
+        val teams = Teams.values()
+        teams.forEach { team ->
+            context?.let { context ->
+                val teamButton = TeamsButton(team, context)
+                binding.newEventTeamContainer.addView(teamButton)
+            }
+        }
     }
 
     private fun setupListeners() {

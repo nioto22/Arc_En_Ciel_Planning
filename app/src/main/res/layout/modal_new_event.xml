@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_modal">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -21,122 +22,314 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:fontFamily="@font/sf_pro_text_regular"
-        android:textSize="17sp"
-        android:textColor="@color/greys_300"
-        android:text="Fermer"
-        android:padding="12dp"
+        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:background="?android:attr/selectableItemBackground"
-        />
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:padding="12dp"
+        android:text="Fermer"
+        android:textColor="@color/greys_300"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/new_event_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/sf_pro_display_bold"
-        android:textSize="32sp"
-        android:textColor="@color/greys_700"
         android:text="Ajouter un évènement"
-        app:layout_constraintTop_toBottomOf="@+id/new_event_close_button"
-        />
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/new_event_team_title"
+        android:textColor="@color/greys_700"
+        android:textSize="32sp"
+        app:layout_constraintTop_toBottomOf="@+id/new_event_close_button" />
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/new_event_title"
-        android:fontFamily="@font/sf_pro_text_regular"
-        android:textSize="17sp"
-        android:textColor="@color/greys_300"
-        android:gravity="start"
-        android:text="Équipes : "
-        android:layout_marginHorizontal="16dp"
-        />
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/new_event_team_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/new_event_team_title"
-        app:flexWrap="wrap"
-        app:flexDirection="row"
-        >
-    </com.google.android.flexbox.FlexboxLayout>
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/new_event_title"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/new_event_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <com.google.android.flexbox.FlexboxLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:flexWrap="wrap"
-        app:flexDirection="row"
-        app:layout_constraintTop_toBottomOf="@+id/new_event_team_container"
-        >
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/new_event_date_picker_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/new_event_date_picker_title"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@+id/new_event_title"
-                android:fontFamily="@font/sf_pro_text_regular"
-                android:textSize="17sp"
-                android:textColor="@color/greys_300"
-                android:gravity="center"
-                android:text="Date :"
-                android:layout_marginHorizontal="16dp"
-                />
-            <DatePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleY="0.8"
-                android:scaleX="0.8"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"
-                android:spinnersShown="true"
-                android:background="@android:color/transparent"
-               />
+                android:gravity="top"
+                android:orientation="vertical">
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/new_event_time_picker_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/new_event_time_picker_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@+id/new_event_title"
-                android:fontFamily="@font/sf_pro_text_regular"
-                android:textSize="17sp"
-                android:textColor="@color/greys_300"
-                android:gravity="center"
-                android:text="Heure :"
-                android:layout_marginHorizontal="16dp"
-                />
-            <com.aprouxdev.arcencielplanning.views.CustomTimePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:theme="@style/DefaultNumberPickerTheme"
-                android:timePickerMode="spinner"
-                />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.google.android.flexbox.FlexboxLayout>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/new_event_team_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:gravity="start"
+                        android:text="Équipes : "
+                        android:textColor="@color/greys_300"
+                        android:textSize="17sp"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/new_event_team_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="12dp"
+                        app:flexDirection="row"
+                        app:flexWrap="wrap"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/new_event_team_title"/>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/date_time_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/new_event_team_container">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/new_event_date_picker_container"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/new_event_date_picker_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="16dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginBottom="12dp"
+                                android:fontFamily="@font/sf_pro_text_regular"
+                                android:gravity="center"
+                                android:text="Date :"
+                                android:textColor="@color/greys_300"
+                                android:textSize="17sp"
+                                app:layout_constraintTop_toBottomOf="@+id/new_event_title" />
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:id="@+id/new_event_date_picker_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="16dp"
+                                android:background="@drawable/background_new_event_item"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:minHeight="130dp"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/date_picker_before_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/sf_pro_text_regular"
+                                    android:gravity="center"
+                                    android:textColor="@color/greys_d9"
+                                    android:textSize="16sp"
+                                    tools:text="30 Oct. 2023" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/date_picker_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginVertical="8dp"
+                                    android:fontFamily="@font/sf_pro_text_medium"
+                                    android:gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="17sp"
+                                    tools:text="31 Oct. 2023" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/date_picker_after_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/sf_pro_text_regular"
+                                    android:gravity="center"
+                                    android:textColor="@color/greys_d9"
+                                    android:textSize="16sp"
+                                    tools:text="01 Nov. 2023" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/new_event_time_picker_container"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/new_event_time_picker_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="16dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginBottom="12dp"
+                                android:fontFamily="@font/sf_pro_text_regular"
+                                android:gravity="center"
+                                android:text="Heure :"
+                                android:textColor="@color/greys_300"
+                                android:textSize="17sp"
+                                app:layout_constraintTop_toBottomOf="@+id/new_event_title" />
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:id="@+id/new_event_time_picker_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="16dp"
+                                android:background="@drawable/background_new_event_item"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:minHeight="130dp"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/date_picker_before_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/sf_pro_text_regular"
+                                    android:gravity="center"
+                                    android:textColor="@color/greys_d9"
+                                    android:textSize="16sp"
+                                    tools:text="08:45" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/date_picker_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginVertical="8dp"
+                                    android:fontFamily="@font/sf_pro_text_medium"
+                                    android:gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="17sp"
+                                    tools:text="09:00" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/date_picker_after_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/sf_pro_text_regular"
+                                    android:gravity="center"
+                                    android:textColor="@color/greys_d9"
+                                    android:textSize="16sp"
+                                    tools:text="09:15" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:id="@+id/horizontal_guideline"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/date_time_container" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/new_event_frequency_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:gravity="center"
+                        android:text="Récurrence :"
+                        android:textColor="@color/greys_300"
+                        android:textSize="17sp"
+                        app:layout_constraintEnd_toStartOf="@+id/horizontal_guideline"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/date_time_container" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/new_event_frequency_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/background_new_event_item_small_corners"
+                        android:fontFamily="@font/sf_pro_text_medium"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="8dp"
+                        android:text="Aucune"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        app:layout_constraintEnd_toEndOf="@+id/new_event_frequency_title"
+                        app:layout_constraintStart_toStartOf="@+id/new_event_frequency_title"
+                        app:layout_constraintTop_toBottomOf="@+id/new_event_frequency_title" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/new_event_comment_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:gravity="start"
+                        android:text="Commentaires :"
+                        android:textColor="@color/greys_300"
+                        android:textSize="17sp"
+                        app:layout_constraintTop_toBottomOf="@+id/new_event_frequency_button" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/new_event_comment_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/background_new_event_item"
+                        android:minHeight="130dp"
+                        app:layout_constraintTop_toBottomOf="@+id/new_event_comment_title" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/new_event_validate_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/background_validation_button"
+                        android:fontFamily="@font/sf_pro_text_semibold"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:text="Valider"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toBottomOf="@+id/new_event_comment_edit_text"/>
+
+                    <View
+                        android:id="@+id/new_event_bottom_margin"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        app:layout_constraintTop_toBottomOf="@+id/new_event_validate_button"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
