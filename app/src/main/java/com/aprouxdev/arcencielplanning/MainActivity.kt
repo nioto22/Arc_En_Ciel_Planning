@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import com.aprouxdev.arcencielplanning.databinding.ActivityMainBinding
+import com.aprouxdev.arcencielplanning.extensions.present
 import com.aprouxdev.arcencielplanning.fragments.HomeFragment
 import com.aprouxdev.arcencielplanning.fragments.PlanningFragment
 import com.aprouxdev.arcencielplanning.modals.NewEventModal
@@ -108,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
             addEventButton.setOnClickListener {
                 val addEventModal = NewEventModal.newInstance()
-                addEventModal.show(supportFragmentManager, NewEventModal.TAG)
+                addEventModal.present(supportFragmentManager, NewEventModal.TAG)
             }
         }
     }
