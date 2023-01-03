@@ -14,6 +14,7 @@ import java.io.Serializable
 
 interface EventFrequencyCallback : Serializable {
     fun onEventFrequencySelected(numberOf: Int, period: Period, frequency: Int)
+    fun cancelFrequency()
 }
 
 class EventFrequencyDialogFragment: DialogFragment(), AdapterView.OnItemSelectedListener {
@@ -106,7 +107,10 @@ class EventFrequencyDialogFragment: DialogFragment(), AdapterView.OnItemSelected
 
     private fun setupUiListeners() {
         with(binding) {
-            frequencyCancelButton.setOnClickListener { dismiss() }
+            frequencyCancelButton.setOnClickListener {
+                mListener?.cancelFrequency()
+                dismiss()
+            }
             frequencyValidateButton.setOnClickListener {
                 mListener?.onEventFrequencySelected(
                     numberOf = mNumber,
@@ -122,10 +126,14 @@ class EventFrequencyDialogFragment: DialogFragment(), AdapterView.OnItemSelected
         when(parent?.id) {
             R.id.spinner_number -> mNumber = pos + 1
             R.id.spinner_period -> mPeriod = Period.values()[pos]
-            R.id.spinner_frequency -> mFrequency = pos + 1
+            R.id.spinner_frequency -> {
+                val frequencyArray = resources.getStringArray(R.array.frequency_frequency)
+                mFrequency =  frequencyArray[pos].toIntOrNull() ?: 1
+            }
             else -> Unit
         }
-        binding.frequencyPrefix.text = mPeriod.getPrefix()
+        val prefixText = "${mPeriod.getPrefix()} "
+        binding.frequencyPrefix.text = prefixText
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -139,10 +147,10 @@ enum class Period(val value :String) {
 
     fun getPrefix(): String {
         return when(this) {
-            DAY -> "Tous les "
-            WEEK -> "Toutes les "
-            MONTH -> "Tous les "
-            YEAR -> "Toutes les "
+            DAY -> "Tous les"
+            WEEK -> "Toutes les"
+            MONTH -> "Tous les"
+            YEAR -> "Toutes les"
         }
     }
 }

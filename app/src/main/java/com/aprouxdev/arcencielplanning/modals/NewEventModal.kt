@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
+import com.aprouxdev.arcencielplanning.R
 import com.aprouxdev.arcencielplanning.data.enums.Teams
 import com.aprouxdev.arcencielplanning.databinding.ModalNewEventBinding
 import com.aprouxdev.arcencielplanning.extensions.formattedToString
@@ -55,6 +57,7 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
     private var mSelectedHour: Int = 8
     private var mSelectedMinute: Int = 0
     private var mComment: String? = null
+    private var mOtherTeamDescription: String? = null
 
     private var mFrequencyNumber: Int = 1
     private var mFrequencyPeriod: Period = DAY
@@ -95,9 +98,10 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
                 dialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.let { it ->
                 mBehavior = BottomSheetBehavior.from(it)
+                mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 activity?.resources?.displayMetrics?.heightPixels?.let {
                     mBehavior.maxHeight = (it * 0.95).toInt()
-                    mBehavior.peekHeight = (it * 0.85).toInt()
+                    //mBehavior.peekHeight = (it * 0.95).toInt()
                 }
                 mBehavior.addBottomSheetCallback(object :
                     BottomSheetBehavior.BottomSheetCallback() {
@@ -139,6 +143,28 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
     private fun setupUiViews() {
         setupTeamsButton()
         setupDateTimePicker()
+    }
+
+    private fun setupTeamsButton() {
+        binding.newEventTeamContainer.removeAllViews()
+        val teams = Teams.values()
+        teams.forEach { team ->
+            context?.let { context ->
+                val isSelected = team.name == mSelectedTeam?.name
+                val teamButton = TeamsButton(
+                    team,
+                    listener = this,
+                    isTeamSelected = isSelected,
+                    context = context
+                )
+                binding.newEventTeamContainer.addView(teamButton)
+            }
+        }
+        mOtherTeamDescription = null
+        binding.newEventOtherTeamEditText.apply {
+            text = mOtherTeamDescription
+            isVisible = mSelectedTeam == Teams.Other
+        }
     }
 
     private fun setupDateTimePicker() {
@@ -189,26 +215,9 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
             time = date
             add(Calendar.DAY_OF_MONTH, 1)
         }
-        return listOf(previousDate.formattedToString("dd MMM yyyy"), selectedDate.formattedToString("dd MMM yyyy"), nextDate.formattedToString("dd MMM yyyy"))
+        return listOf(previousDate.formattedToString("EEE d MMM yyyy"), selectedDate.formattedToString("EEE d MMM yyyy"), nextDate.formattedToString("EEE d MMM yyyy"))
     }
 
-
-    private fun setupTeamsButton() {
-        binding.newEventTeamContainer.removeAllViews()
-        val teams = Teams.values()
-        teams.forEach { team ->
-            context?.let { context ->
-                val isSelected = team.name == mSelectedTeam?.name
-                val teamButton = TeamsButton(
-                    team,
-                    listener = this,
-                    isTeamSelected = isSelected,
-                    context = context
-                )
-                binding.newEventTeamContainer.addView(teamButton)
-            }
-        }
-    }
     //endregion
 
     //region UI LISTENERS
@@ -245,6 +254,20 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
                 }
             })
             /*
+            * OTHER TEAM EDIT TEXT
+             */
+            newEventOtherTeamEditText.addTextChangedListener(object: TextWatcher{
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun afterTextChanged(editText: Editable?) {
+                    mOtherTeamDescription = editText.toString()
+                }
+            })
+            /*
             * DATE PICKER
              */
             newEventDatePickerButton.setOnClickListener {
@@ -266,10 +289,12 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
     }
 
     private fun openFrequencyPickerDialog() {
+        val frequencyArray = resources.getStringArray(R.array.frequency_frequency)
+        val frequencyPosition = frequencyArray.indexOfFirst { it == mFrequency.toString() }
         val frequencyDialog = EventFrequencyDialogFragment.newInstance(
             numberOf = mFrequencyNumber,
             period = mFrequencyPeriod,
-            frequency = mFrequency,
+            frequency = frequencyPosition + 1,
             listener = this)
         frequencyDialog.show(childFragmentManager, EventFrequencyDialogFragment.TAG)
     }
@@ -319,9 +344,15 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
         mFrequency = frequency
         val prefix = period.getPrefix()
         val number = if (numberOf == 1) "" else numberOf.toString()
-        val periodForm = if (numberOf == 1) period.value.dropLast(1) else period.value
-        val frequencyText = "$prefix$number $periodForm $frequency fois"
+        val frequencyText = "$prefix$number ${period.value} $frequency fois"
         binding.newEventFrequencyButton.text = frequencyText
+    }
+
+    override fun cancelFrequency() {
+        mFrequencyNumber = 1
+        mFrequencyPeriod = DAY
+        mFrequency = 1
+        binding.newEventFrequencyButton.text = "Aucune"
     }
 
 

@@ -9,9 +9,9 @@ enum class Teams {
 
     fun getName(): String {
         return when(this) {
+            Shop -> "Magasin"
             Clothes -> "Vêtements"
             Toys -> "Jouets"
-            Shop -> "Magasin"
             Braderie -> "Braderie"
             Cleaning -> "Ménage"
             Other -> "Autre"

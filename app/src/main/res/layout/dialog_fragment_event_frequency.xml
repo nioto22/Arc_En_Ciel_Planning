@@ -9,7 +9,7 @@
         android:id="@+id/frequency_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/greys_50"
+        app:cardBackgroundColor="@color/white"
         app:cardElevation="12dp"
         app:cardCornerRadius="8dp"
         app:cardUseCompatPadding="true"
