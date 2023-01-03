@@ -77,7 +77,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="12dp"
                 android:fontFamily="@font/sf_pro_display_bold"
                 android:text="Ajouter un évènement"
                 android:textColor="@color/greys_700"
@@ -137,7 +136,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="16dp"
                             android:layout_marginTop="12dp"
-                            android:layout_marginBottom="12dp"
                             android:fontFamily="@font/sf_pro_text_regular"
                             android:gravity="center"
                             android:text="Date :"
@@ -150,12 +148,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="16dp"
-                            android:background="@drawable/background_new_event_item"
+                            android:background="@drawable/background_new_event_item_small_corners"
                             android:clickable="true"
                             android:focusable="true"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="12dp">
+                            android:orientation="vertical">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/date_picker_before_date"
@@ -165,7 +162,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/greys_d9"
                                 android:textSize="16sp"
-                                tools:text="30 Oct. 2023" />
+                                tools:text="30 Oct. 2023"
+                                android:visibility="gone"/>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/date_picker_date"
@@ -186,7 +184,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/greys_d9"
                                 android:textSize="16sp"
-                                tools:text="01 Nov. 2023" />
+                                tools:text="01 Nov. 2023"
+                                android:visibility="gone"/>
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -207,7 +206,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="16dp"
                             android:layout_marginTop="12dp"
-                            android:layout_marginBottom="12dp"
                             android:fontFamily="@font/sf_pro_text_regular"
                             android:gravity="center"
                             android:text="Heure :"
@@ -220,12 +218,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="16dp"
-                            android:background="@drawable/background_new_event_item"
+                            android:background="@drawable/background_new_event_item_small_corners"
                             android:clickable="true"
                             android:focusable="true"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="12dp">
+                            android:orientation="vertical">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/date_picker_before_time"
@@ -235,7 +232,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/greys_d9"
                                 android:textSize="16sp"
-                                android:text="08:45" />
+                                tools:text="08:45"
+                                android:visibility="gone"/>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/date_picker_time"
@@ -246,7 +244,7 @@
                                 android:gravity="center"
                                 android:textColor="@color/black"
                                 android:textSize="17sp"
-                                android:text="09:00" />
+                                tools:text="09:00" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/date_picker_after_time"
@@ -256,7 +254,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/greys_d9"
                                 android:textSize="16sp"
-                                android:text="09:15" />
+                                tools:text="09:15"
+                                android:visibility="gone"/>
                         </androidx.appcompat.widget.LinearLayoutCompat>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -275,7 +274,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="12dp"
                     android:fontFamily="@font/sf_pro_text_regular"
                     android:gravity="center"
                     android:text="Récurrence :"

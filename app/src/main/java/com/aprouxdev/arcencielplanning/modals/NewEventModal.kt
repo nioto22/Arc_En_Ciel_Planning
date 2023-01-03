@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,10 @@ import com.aprouxdev.arcencielplanning.databinding.ModalNewEventBinding
 import com.aprouxdev.arcencielplanning.extensions.formattedToString
 import com.aprouxdev.arcencielplanning.views.TeamButtonCallback
 import com.aprouxdev.arcencielplanning.views.TeamsButton
+import com.aprouxdev.arcencielplanning.views.TimePickerDialogCallback
+import com.aprouxdev.arcencielplanning.views.TimePickerDialogFragment
+import com.aprouxdev.arcencielplanning.views.dialogfragments.*
+import com.aprouxdev.arcencielplanning.views.dialogfragments.Period.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -21,7 +27,8 @@ import java.lang.Float.min
 import java.util.*
 
 
-class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback {
+class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePickerDialogCallback,
+    DatePickerDialogCallback, EventFrequencyCallback {
 
     companion object {
         const val TAG = "NewEventModal"
@@ -43,10 +50,16 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback {
     private lateinit var mContext: Context
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
-    private var mSelectedTeam: Teams? = Teams.Other
+    private var mSelectedTeam: Teams? = null
     private lateinit var mSelectedDate: Date
-    private var mSelectedHour = 9
-    private var mSelectedMinute = 0
+    private var mSelectedHour: Int = 8
+    private var mSelectedMinute: Int = 0
+    private var mComment: String? = null
+
+    private var mFrequencyNumber: Int = 1
+    private var mFrequencyPeriod: Period = DAY
+    private var mFrequency: Int = 1
+
 
     ///////////////////////////////////////////////////////////////////////////
     // LIFECYCLE METHODS
@@ -116,22 +129,13 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback {
         setupListeners()
     }
 
-
-    private fun closeModal() {
-        mBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-    }
-
-    override fun dismiss() {
-        super.dismiss()
-        onCloseMethod()
-    }
-
-
+    //region DATA OBSERVER
     private fun setupDataObservers() {
 
     }
+    //endregion
 
-
+    //region UI VIEWS
     private fun setupUiViews() {
         setupTeamsButton()
         setupDateTimePicker()
@@ -205,7 +209,9 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback {
             }
         }
     }
+    //endregion
 
+    //region UI LISTENERS
     private fun setupListeners() {
         with(binding) {
             /*
@@ -213,7 +219,7 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback {
              */
             newEventScrollView.viewTreeObserver.addOnScrollChangedListener {
                 val scrollY = newEventScrollView.scrollY
-                val scrollYOffset = min(max(0.001f, (scrollY - 25).toFloat()), 100f)
+                val scrollYOffset = min(max(0.001f, (scrollY - 44).toFloat()), 100f)
                 newEventTitleCollapsed.alpha = scrollYOffset / 100
                 newEventToolbarSeparator.alpha = scrollYOffset / 100
             }
@@ -224,18 +230,102 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback {
             newEventCloseButton.setOnClickListener {
                 dismiss()
             }
+            /*
+            * COMMENT EDIT TEXT
+             */
+            newEventCommentEditText.addTextChangedListener(object: TextWatcher{
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun afterTextChanged(editText: Editable?) {
+                    mComment = editText.toString()
+                }
+            })
+            /*
+            * DATE PICKER
+             */
+            newEventDatePickerButton.setOnClickListener {
+                openDatePickerDialog()
+            }
+            /*
+            * TIME PICKER
+             */
+            newEventTimePickerButton.setOnClickListener {
+                openTimePickerDialog()
+            }
+            /*
+            * FREQUENCY
+             */
+            newEventFrequencyButton.setOnClickListener {
+                openFrequencyPickerDialog()
+            }
         }
     }
 
-    private fun onCloseMethod() {
+    private fun openFrequencyPickerDialog() {
+        val frequencyDialog = EventFrequencyDialogFragment.newInstance(
+            numberOf = mFrequencyNumber,
+            period = mFrequencyPeriod,
+            frequency = mFrequency,
+            listener = this)
+        frequencyDialog.show(childFragmentManager, EventFrequencyDialogFragment.TAG)
+    }
 
+    private fun openTimePickerDialog() {
+        val timePickerDialog = TimePickerDialogFragment.newInstance(hour= mSelectedHour, minute= mSelectedMinute, listener = this)
+        timePickerDialog.show(childFragmentManager, TimePickerDialogFragment.TAG)
+    }
 
+    private fun openDatePickerDialog() {
+        val cal = Calendar.getInstance()
+        cal.time = mSelectedDate
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog = DatePickerDialogFragment.newInstance(year, month, day, listener = this)
+        datePickerDialog.show(childFragmentManager, DatePickerDialogFragment.TAG)
     }
 
     override fun onTeamButtonClicked(team: Teams) {
         mSelectedTeam = team
         setupTeamsButton()
     }
+
+    override fun onTimeSelected(hour: Int, minute: Int) {
+        mSelectedHour = hour
+        mSelectedMinute = minute
+        setupDateTimePicker()
+    }
+
+    override fun onDateSelected(year: Int, month: Int, day: Int) {
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR, year)
+        cal.set(Calendar.MONTH, month)
+        cal.set(Calendar.DAY_OF_MONTH, day)
+        mSelectedDate = cal.time
+        setupDateTimePicker()
+    }
+
+    override fun onEventFrequencySelected(
+        numberOf: Int,
+        period: Period,
+        frequency: Int
+    ) {
+        mFrequencyNumber = numberOf
+        mFrequencyPeriod = period
+        mFrequency = frequency
+        val prefix = period.getPrefix()
+        val number = if (numberOf == 1) "" else numberOf.toString()
+        val periodForm = if (numberOf == 1) period.value.dropLast(1) else period.value
+        val frequencyText = "$prefix$number $periodForm $frequency fois"
+        binding.newEventFrequencyButton.text = frequencyText
+    }
+
+
+    //endregion
 
 }
 
