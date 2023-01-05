@@ -7,4 +7,5 @@
     <string name="alert_shop">Information magasin</string>
     <string name="alert_urgency">Information importante</string>
     <string name="alert_assiduity">Rappel de présence</string>
+    <string name="event_comment_hint">Aucun commentaire</string>
 </resources>

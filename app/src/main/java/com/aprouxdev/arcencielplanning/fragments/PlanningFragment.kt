@@ -1,27 +1,30 @@
 package com.aprouxdev.arcencielplanning.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.view.doOnPreDraw
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.aprouxdev.arcencielplanning.databinding.FragmentPlanningBinding
+import com.aprouxdev.arcencielplanning.databinding.ViewCalendarDayBinding
 import com.aprouxdev.arcencielplanning.views.calendar.DayViewContainer
 import com.aprouxdev.arcencielplanning.views.calendar.OnCalendarCallback
-import com.kizitonwose.calendar.core.*
-import com.kizitonwose.calendar.view.CalendarView
-import com.kizitonwose.calendar.view.WeekCalendarView
-import com.kizitonwose.calendar.view.WeekDayBinder
+import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.view.*
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class PlanningFragment : Fragment() {
+class PlanningFragment : Fragment(), OnCalendarCallback {
 
     companion object {
         const val TAG = "PlanningFragment"
@@ -37,9 +40,15 @@ class PlanningFragment : Fragment() {
     private var _binding: FragmentPlanningBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private lateinit var calendarView: WeekCalendarView
+    private lateinit var calendarView: CalendarView
     private var mSelectedDate : LocalDate = LocalDate.now()
     private val mAllItemsDate = ArrayList<LocalDate>()
+
+    private var selectedDate = LocalDate.now()
+
+    private val dateFormatter = DateTimeFormatter.ofPattern("dd")
+    private val dayFormatter = DateTimeFormatter.ofPattern("EEE")
+    private val monthFormatter = DateTimeFormatter.ofPattern("MMM")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,13 +73,35 @@ class PlanningFragment : Fragment() {
 
 
     private fun setupUiViews() {
-        setupCalendarView()
+        setupCalendarView2()
     }
 
-    private fun setupCalendarView() {
+    private fun setupCalendarView2() {
+        val dm = DisplayMetrics()
+        val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm.defaultDisplay.getMetrics(dm)
+        binding.calendarView.apply {
+            val dayWidth = dm.widthPixels / 5
+            val dayHeight = (dayWidth * 1.25).toInt()
+            val d = DaySize.Rectangle
+            //daySize = Size(dayWidth, dayHeight)
+        }
+
+        binding.calendarView.dayBinder = object: MonthDayBinder<DayViewContainer> {
+            override fun create(view: View) = DayViewContainer(view, this@PlanningFragment)
+            override fun bind(container: DayViewContainer, data: CalendarDay) = container.setState(context, data.date == mSelectedDate)
+        }
+
+        val currentMonth = YearMonth.now()
+        // Value for firstDayOfWeek does not matter since inDates and outDates are not generated.
+        binding.calendarView.setup(currentMonth, currentMonth.plusMonths(3), DayOfWeek.values().random())
+        binding.calendarView.scrollToDate(LocalDate.now())
+    }
+
+   /* private fun setupCalendarView() {
         calendarView = binding.calendarView
 
-        calendarView.dayBinder = object: WeekDayBinder<DayViewContainer> {
+        calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
             val today = LocalDate.now()
             override fun bind(container: DayViewContainer, data: WeekDay) {
                 val dayNumber = data.date.dayOfMonth
@@ -200,6 +231,12 @@ class PlanningFragment : Fragment() {
         }
 
          */
+    }
+
+    */
+
+    override fun onDaySelected(date: LocalDate) {
+        //TODO("Not yet implemented")
     }
 
 }

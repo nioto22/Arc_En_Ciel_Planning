@@ -17,7 +17,7 @@
         android:textStyle="bold"
         android:text="13 Novembre 2022"/>
 
-<com.kizitonwose.calendar.view.WeekCalendarView
+<com.kizitonwose.calendar.view.CalendarView
     android:id="@+id/calendar_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,5 +25,6 @@
     app:cv_dayViewResource="@layout/view_calendar_day"
     android:layout_marginHorizontal="16dp"
     />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
