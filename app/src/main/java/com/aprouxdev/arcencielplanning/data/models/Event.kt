@@ -1,6 +1,7 @@
 package com.aprouxdev.arcencielplanning.data.models
 
 import com.aprouxdev.arcencielplanning.data.enums.Teams
+import java.io.Serializable
 import java.util.*
 
 
@@ -13,4 +14,4 @@ class Event(
     val title: String,
     val description: String,
     val comments: List<Comment>
-)
+) : Serializable

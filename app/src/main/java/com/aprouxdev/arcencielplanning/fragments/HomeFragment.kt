@@ -23,6 +23,8 @@ import com.aprouxdev.arcencielplanning.databinding.FragmentHomeBinding
 import com.aprouxdev.arcencielplanning.extensions.getCurrentItem
 import com.aprouxdev.arcencielplanning.extensions.hasNext
 import com.aprouxdev.arcencielplanning.extensions.hasPreview
+import com.aprouxdev.arcencielplanning.extensions.present
+import com.aprouxdev.arcencielplanning.modals.EventDetailModal
 import java.util.*
 
 
@@ -193,7 +195,8 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
     }
 
     override fun onHomeEventClicked(event: Event) {
-        Toast.makeText(context, "Event : ${event.title}", Toast.LENGTH_SHORT).show()
+        val eventDetailModal = EventDetailModal.newInstance(event)
+        eventDetailModal.present(childFragmentManager, EventDetailModal.TAG)
     }
 
 }
