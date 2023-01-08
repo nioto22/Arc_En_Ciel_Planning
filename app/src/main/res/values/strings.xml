@@ -11,4 +11,6 @@
     <string name="event_detail_join_button">S\'inscrire</string>
     <string name="button_validate">Valider</string>
     <string name="button_delete">Supprimer</string>
+    <string name="new_event_button">Créer un évènement</string>
+    <string name="planning_no_item_placeholder">Aucun évènement de prévu à cette date</string>
 </resources>

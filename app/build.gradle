@@ -13,11 +13,14 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -27,10 +30,20 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5' // keep 1.1.5 to fix desugaring issues
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
@@ -40,8 +53,7 @@ dependencies {
 
 
     // Calendar
-   // coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.0'
-    implementation 'com.kizitonwose.calendar:view:2.0.4'
+    implementation 'com.kizitonwose.calendar:view:2.1.1'
 
 
     // Flexboxlayout

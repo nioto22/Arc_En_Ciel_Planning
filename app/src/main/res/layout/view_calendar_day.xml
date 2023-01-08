@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center">
 <androidx.appcompat.widget.LinearLayoutCompat
     android:id="@+id/calendar_day_background"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingVertical="12dp"
-    android:paddingHorizontal="6dp"
+    android:paddingTop="12dp"
+    android:paddingHorizontal="8dp"
     android:background="@drawable/background_calendar_day"
     android:orientation="vertical"
     android:gravity="center">
@@ -18,9 +19,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="17sp"
+        android:textSize="18sp"
         android:textColor="@color/black"
-        android:text="31"
+        android:fontFamily="@font/sf_pro_text_semibold"
+        tools:text="31"
         android:textStyle="bold"
         android:layout_marginBottom="3dp"
         />
@@ -32,10 +34,10 @@
         android:gravity="center"
         android:textSize="15sp"
         android:textColor="@color/black"
+        android:fontFamily="@font/sf_pro_text_medium"
         android:textStyle="normal"
         android:text="Oct."
         />
-</androidx.appcompat.widget.LinearLayoutCompat>
     <View
         android:id="@+id/calendar_day_dot"
         android:layout_width="8dp"
@@ -44,4 +46,6 @@
         android:layout_gravity="center"
         android:layout_marginVertical="4dp"
         />
+</androidx.appcompat.widget.LinearLayoutCompat>
+
 </androidx.appcompat.widget.LinearLayoutCompat>

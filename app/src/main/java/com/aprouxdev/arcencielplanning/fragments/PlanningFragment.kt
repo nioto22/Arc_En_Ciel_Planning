@@ -1,32 +1,46 @@
 package com.aprouxdev.arcencielplanning.fragments
 
-import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
+import android.widget.TextView
+import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.aprouxdev.arcencielplanning.adapters.PlanningEventAdapter
+import com.aprouxdev.arcencielplanning.adapters.PlanningEventListener
+import com.aprouxdev.arcencielplanning.data.mock.MockData
+import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.databinding.FragmentPlanningBinding
-import com.aprouxdev.arcencielplanning.databinding.ViewCalendarDayBinding
+import com.aprouxdev.arcencielplanning.extensions.getLegendName
+import com.aprouxdev.arcencielplanning.extensions.present
+import com.aprouxdev.arcencielplanning.modals.EventDetailModal
 import com.aprouxdev.arcencielplanning.views.calendar.DayViewContainer
 import com.aprouxdev.arcencielplanning.views.calendar.OnCalendarCallback
-import com.kizitonwose.calendar.core.CalendarDay
+import com.aprouxdev.arcencielplanning.views.calendar.WeekViewContainer
+import com.aprouxdev.arcencielplanning.views.dialogfragments.DatePickerDialogCallback
+import com.aprouxdev.arcencielplanning.views.dialogfragments.DatePickerDialogFragment
+import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
-import com.kizitonwose.calendar.view.*
+import com.kizitonwose.calendar.core.yearMonth
+import com.kizitonwose.calendar.view.WeekDayBinder
+import com.kizitonwose.calendar.view.WeekHeaderFooterBinder
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.YearMonth
+import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Locale
 
 
-class PlanningFragment : Fragment(), OnCalendarCallback {
+class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallback,
+    PlanningEventListener {
 
     companion object {
+        private val _today = LocalDate.now()
         const val TAG = "PlanningFragment"
         fun newInstance(): PlanningFragment {
             val args = Bundle()
@@ -40,15 +54,20 @@ class PlanningFragment : Fragment(), OnCalendarCallback {
     private var _binding: FragmentPlanningBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private lateinit var calendarView: CalendarView
-    private var mSelectedDate : LocalDate = LocalDate.now()
-    private val mAllItemsDate = ArrayList<LocalDate>()
+    private var mSelectedDate: LocalDate = LocalDate.now()
+    set(value) {
+        field = value
+        binding.planningNoItemPlaceholder.isVisible = !mAllItemsDate.contains(value)
+        setupRecyclerView()
+    }
+    private var mAllItemsDate = ArrayList<LocalDate>()
 
-    private var selectedDate = LocalDate.now()
+    private lateinit var mEventAdapter: PlanningEventAdapter
 
-    private val dateFormatter = DateTimeFormatter.ofPattern("dd")
-    private val dayFormatter = DateTimeFormatter.ofPattern("EEE")
-    private val monthFormatter = DateTimeFormatter.ofPattern("MMM")
+
+    private val shortMonthFormatter = DateTimeFormatter.ofPattern("MMM")
+    private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
+    private val calendarDateFormatter = DateTimeFormatter.ofPattern("MMMM yyyy")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,8 +81,21 @@ class PlanningFragment : Fragment(), OnCalendarCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //TODO REMOVE AFTER TEST MOCK ITEM
+        val today = LocalDate.now()
+        val itemOne = today.plusDays(3)
+        val itemTwo = today.plusDays(5)
+        val itemThree = today.plusDays(7)
+        val itemFour = today.plusDays(8)
+        val items = listOf(itemOne, itemTwo, itemThree, itemFour)
+        mAllItemsDate.addAll(items)
+
         setupUiViews()
+        setupUiListeners()
     }
+
+
 
 
     override fun onDestroy() {
@@ -73,170 +105,173 @@ class PlanningFragment : Fragment(), OnCalendarCallback {
 
 
     private fun setupUiViews() {
-        setupCalendarView2()
+        mSelectedDate = LocalDate.now()
+        binding.calendarDate.text =  calendarDateFormatter.format(mSelectedDate).replaceFirstChar { it.uppercaseChar() }
+        setupCalendarView()
+        setupRecyclerView()
     }
 
-    private fun setupCalendarView2() {
-        val dm = DisplayMetrics()
-        val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        wm.defaultDisplay.getMetrics(dm)
-        binding.calendarView.apply {
-            val dayWidth = dm.widthPixels / 5
-            val dayHeight = (dayWidth * 1.25).toInt()
-            val d = DaySize.Rectangle
-            //daySize = Size(dayWidth, dayHeight)
-        }
 
-        binding.calendarView.dayBinder = object: MonthDayBinder<DayViewContainer> {
+
+    private fun setupCalendarView() {
+        val daysOfWeek = DayOfWeek.values()
+
+        val today = LocalDate.now()
+        val endDate = today.plusMonths(12)
+        binding.calendarView.setup(today, endDate, daysOfWeek.first())
+        binding.calendarView.scrollToDate(mSelectedDate)
+
+        binding.calendarView.dayBinder = object : WeekDayBinder<DayViewContainer> {
             override fun create(view: View) = DayViewContainer(view, this@PlanningFragment)
-            override fun bind(container: DayViewContainer, data: CalendarDay) = container.setState(context, data.date == mSelectedDate)
-        }
-
-        val currentMonth = YearMonth.now()
-        // Value for firstDayOfWeek does not matter since inDates and outDates are not generated.
-        binding.calendarView.setup(currentMonth, currentMonth.plusMonths(3), DayOfWeek.values().random())
-        binding.calendarView.scrollToDate(LocalDate.now())
-    }
-
-   /* private fun setupCalendarView() {
-        calendarView = binding.calendarView
-
-        calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
-            val today = LocalDate.now()
             override fun bind(container: DayViewContainer, data: WeekDay) {
-                val dayNumber = data.date.dayOfMonth
-                val dayText = data.date.dayOfWeek.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault())
-                container.dayTextView.text = dayText
-                container.dayNumberView.text = dayNumber.toString()
+                val context = context ?: return
+                container.day = data
+                val monthTv = container.binding.calendarDayDayText
+                val dayTv = container.binding.calendarDayDayNumber
+                val background = container.binding.calendarDayBackground
+                background.isSelected = data.date == mSelectedDate
+                val newTypeface =
+                    if (data.date == today || data.date == mSelectedDate) Typeface.BOLD
+                    else Typeface.NORMAL
+                monthTv.apply {
+                    text =
+                        shortMonthFormatter.format(data.date.month)
+                            .replaceFirstChar { it.lowercase() }
+                    setTypeface(this.typeface, newTypeface)
+                }
+                dayTv.apply {
+                    text = data.date.dayOfMonth.toString()
+                    setTypeface(this.typeface, newTypeface)
+                }
                 container.setState(
                     context = context,
                     isSelected = data.date == mSelectedDate,
-                    isToday = data.date == today,
-                    hasItem = mAllItemsDate.contains(data.date)
+                    hasItem = mAllItemsDate.contains(data.date),
+                    isToday = data.date == today
                 )
             }
-
-            override fun create(view: View) = DayViewContainer(view, object : OnCalendarCallback{
-                override fun onDaySelected(date: LocalDate) {
-                    mSelectedDate = date
-                }
-
-            })
-
         }
 
-        // SETUP
-        val currentMonth = YearMonth.now()
-        val startMonth = currentMonth.minusMonths(4)  // Adjust as needed
-        val endMonth = currentMonth.plusMonths(12)  // Adjust as needed
-        val firstDayOfWeek = firstDayOfWeekFromLocale() // Available from the library
-        val currentWeekDay = WeekDay(LocalDate.now(), WeekDayPosition.InDate)
-        calendarView.setup(startDate = startMonth.atStartOfMonth(), endDate = endMonth.atEndOfMonth(), firstDayOfWeek= firstDayOfWeek)
-        calendarView.scrollToDay(currentWeekDay)
-        /*val daysOfWeek = daysOfWeekFromLocale()
-        val currentMonth = YearMonth.now()
-
-        endMonth = currentMonth.plusMonths(12)
-        calendarView.apply {
-            doOnPreDraw {
-                val dayWidth = calendarView.width / 7
-                val dayHeight = (dayWidth * .666).toInt()
-                daySize = Size(dayWidth, dayHeight)
-            }
-            setup(
-                startMonth = currentMonth,
-                endMonth = currentMonth.plusMonths(12),
-                firstDayOfWeek = daysOfWeek.first()
-            )
-        }
-
-        // Setup calendar toolbar
-        calendarView.findFirstVisibleMonth()?.let {
-            mCurrentCalendarMonth = it
-        }
-        if (this::mCurrentCalendarMonth.isInitialized) {
-            setupCalendarToolbar(mCurrentCalendarMonth)
-        }
-
-        // Setup Day binder
-        calendarView.dayBinder = object : DayBinder<DayViewContainer> {
-            override fun create(view: View): DayViewContainer =
-                DayViewContainer(view = view, listener = this@MainCalendarFragment)
-
-            override fun bind(container: DayViewContainer, day: CalendarDay) {
-                container.day = day
-                val dayTextView = container.binding.calendarDayTv
-
-                dayTextView.text = day.date.dayOfMonth.toString()
-                val dayHorizontalMargin = if (day.date.dayOfMonth > 9) 8 else 16
-                dayTextView.margin(
-                    left = dayHorizontalMargin.toFloat(),
-                    right = dayHorizontalMargin.toFloat()
-                )
-
-                if (day.owner == DayOwner.THIS_MONTH) {
-                    container.binding.root.isVisible = true
-                    val isDisable = day.date < today
-                    val hasItem = events.contains(day.date)
-                    val isToday = day.date == today
-                    val isSelectedDate = day.date == selectedDate
-                    container.setState(
-                        context,
-                        isSelected = isSelectedDate,
-                        isToday = isToday,
-                        hasItem = hasItem,
-                        isDisabled = isDisable
-                    )
-                } else {
-                    container.binding.root.isInvisible = true
-                }
-            }
-        }
-
-        // Scroll listener
-        calendarView.monthScrollListener = { calendarMonth ->
-            mCurrentCalendarMonth = calendarMonth
-            setupCalendarToolbar(calendarMonth)
-
-            // Selected date on Scroll
-            // if Month view -> first date of month
-            // first date of month = max(firstDate, today)
-            if (isMonthView()) {
-                val firstDate =
-                    if (calendarMonth.yearMonth.atDay(1) < today) today else calendarMonth.yearMonth.atDay(
-                        1
-                    )
-                selectDate(firstDate)
+        binding.calendarView.weekScrollListener = {
+            // In week mode, we show the header a bit differently.
+            // We show indices with dates from different months since
+            // dates overflow and cells in one index can belong to different
+            // months/years.
+            val firstDate = it.days.first().date
+            val lastDate = it.days.last().date
+            val calendarText = if (firstDate.yearMonth == lastDate.yearMonth) {
+                calendarDateFormatter.format(firstDate)
+                    .replaceFirstChar { firstChar -> firstChar.uppercaseChar() }
             } else {
-                val selectedWeekDayValue = selectedWeekDay ?: 0
-                val selectedDate =
-                    calendarMonth.weekDays.map { it.firstOrNull { day -> day.date.dayOfWeek.value == selectedWeekDayValue } }
-                        .firstOrNull()?.date
-                        ?: calendarMonth.weekDays.first().first().date
-                selectDate(selectedDate)
+                val monthText =
+                    "${
+                        monthTitleFormatter.format(firstDate)
+                            .replaceFirstChar { firstChar -> firstChar.uppercaseChar() }
+                    } - " +
+                            monthTitleFormatter.format(lastDate)
+                                .replaceFirstChar { firstChar -> firstChar.uppercaseChar() }
+                val yearText = if (firstDate.year == lastDate.year) {
+                    firstDate.yearMonth.year.toString()
+                } else {
+                    "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
+                }
+                "$monthText $yearText"
             }
+            binding.calendarDate.text = calendarText
         }
 
-        calendarView.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer> {
-            override fun create(view: View): MonthViewContainer = MonthViewContainer(view)
-            override fun bind(container: MonthViewContainer, month: CalendarMonth) {
+        binding.calendarView.weekHeaderBinder = object : WeekHeaderFooterBinder<WeekViewContainer> {
+            override fun create(view: View): WeekViewContainer = WeekViewContainer(view)
+            override fun bind(container: WeekViewContainer, data: Week) {
                 if (container.legendLayout.tag == null) {
-                    container.legendLayout.tag = month.yearMonth
+                    container.legendLayout.tag = data.days.first().date.dayOfYear
                     container.legendLayout.children.map { it as TextView }
                         .forEachIndexed { index, tv ->
-                            tv.text = daysOfWeek[index].getDisplayName(TextStyle.NARROW_STANDALONE, Locale.getDefault())
+                            tv.text = daysOfWeek[index].getLegendName()
                         }
                 }
             }
-        }
 
-         */
+        }
     }
 
-    */
+    private fun setupRecyclerView() {
+        val hasItem = mAllItemsDate.contains(mSelectedDate)
+        val selectedItems = if (hasItem) listOf(MockData.event1, MockData.event6)//viewModel.getItemForDate(mSelectedDate)
+            else emptyList()
+        if (this::mEventAdapter.isInitialized) {
+            mEventAdapter.updateData(selectedItems)
+        } else {
+            with(binding.planningPlanningRecyclerview) {
+                layoutManager = LinearLayoutManager(context)
+                mEventAdapter = PlanningEventAdapter(context = context,
+                data = selectedItems,
+                listener = this@PlanningFragment
+                )
+                adapter = mEventAdapter
+            }
+        }
+    }
+
+
+    private fun setupUiListeners() {
+        binding.calendarSelectDateButton.setOnClickListener {
+            val datePickerFragment = DatePickerDialogFragment.newInstance(
+                year = mSelectedDate.year,
+                month = mSelectedDate.monthValue - 1,
+                day = mSelectedDate.dayOfMonth,
+                listener = this
+            )
+            datePickerFragment.show(childFragmentManager, DatePickerDialogFragment.TAG)
+        }
+    }
 
     override fun onDaySelected(date: LocalDate) {
-        //TODO("Not yet implemented")
+        val oldDate = mSelectedDate
+        mSelectedDate = date
+        binding.calendarView.apply {
+            notifyDateChanged(oldDate)
+            notifyDateChanged(mSelectedDate)
+        }
     }
+
+    /**
+     * Date picker callback
+     */
+    override fun onDateSelected(year: Int, month: Int, day: Int) {
+        val oldDate = mSelectedDate
+        val newDate = LocalDate.of(year, getMonth(month + 1), day)
+        mSelectedDate = newDate
+        binding.calendarView.apply {
+            notifyDateChanged(oldDate)
+            notifyDateChanged(mSelectedDate)
+            smoothScrollToDate(mSelectedDate)
+        }
+    }
+
+    override fun onPlanningEventClicked(event: Event) {
+        val eventDetailModal = EventDetailModal.newInstance(event)
+        eventDetailModal.present(childFragmentManager, EventDetailModal.TAG)
+    }
+
+    private fun getMonth(month: Int): Month {
+      return when(month) {
+            1 -> Month.JANUARY
+            2 -> Month.FEBRUARY
+            3 -> Month.MARCH
+            4 -> Month.APRIL
+            5 -> Month.MAY
+            6 -> Month.JUNE
+            7 -> Month.JULY
+            8 -> Month.AUGUST
+            9 -> Month.SEPTEMBER
+            10 -> Month.OCTOBER
+            11 -> Month.NOVEMBER
+            12 -> Month.DECEMBER
+            else -> Month.JANUARY
+        }
+    }
+
+
 
 }
