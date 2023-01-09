@@ -1,9 +1,12 @@
+import kotlin.collections.List;
+
+
 CREATE TABLE UserDb (
 id TEXT NOT NULL PRIMARY KEY,
 name TEXT NOT NULL,
 isAdmin INTEGER AS Boolean DEFAULT 1,
 imageUrl TEXT,
-teams TEXT
+teams TEXT AS List<String>
 );
 
 
@@ -13,8 +16,8 @@ SELECT * FROM UserDb WHERE id = :id;
 getAllUserDbs:
 SELECT * FROM UserDb;
 
-insertUserDb:
-INSERT OR REPLACE INTO UserDb VALUES (?, ?, ?, ?, ?);
+insertOrReplace:
+INSERT OR REPLACE INTO UserDb VALUES ?;
 
 deleteUserDbById:
 DELETE FROM UserDb

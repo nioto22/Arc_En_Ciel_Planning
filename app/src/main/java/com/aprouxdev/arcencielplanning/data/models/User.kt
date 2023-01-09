@@ -6,5 +6,5 @@ data class User(
     val name: String,
     val isAdmin : Boolean,
     val imageUrl: String?,
-    val teams: List<Int>?
+    val teams: List<String>?
 )

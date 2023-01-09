@@ -6,16 +6,17 @@ import com.aprouxdev.arcencielplanning.data.models.Alert
 import com.aprouxdev.arcencielplanning.data.models.Comment
 import com.aprouxdev.arcencielplanning.data.models.Event
 import java.time.Instant
+import java.time.LocalDate
 import java.util.*
 
 
 class MockData {
     companion object {
-        val alert1 = Alert(id = "1", type = AlertType.General, title = "Information Noël", body = "La braderie de noël aura lieu à l'arande le 9 décambre prochain ! \n N'oubliez pas de prévenir vos proches pour nous donner un coup de main le vendredi soir.", endDate = "01012023")
-        val alert2 = Alert(id = "2", type = AlertType.Urgency, title = "Attention urgent", body = "Il manque trois bénévoles pour le samedi 12 Novembre. \nCliquez ici pour vous inscrire", endDate = "01012023")
-        val alert3 = Alert(id = "3", type = AlertType.Team, title = "Tri des jouets", body = "Salut l'équipe, pour information des cartons de puzzle sont à vérifier dans le local", endDate = "01012023")
-        val alert4 = Alert(id = "4", type = AlertType.Shop, title = "Vacances de la Toussaint", body = "Le magasin sera fermé les samedis 23 Octobre et 2 Novembre", endDate = "01012023")
-        val alert5 = Alert(id = "5", type = AlertType.Assiduity, title = "On ne te vois plus !?", body = "On espère que tu vas bien ? \n Petit rappel : il est demandé de faire au moins un samedi par mois en tant que bénévole au magasin", endDate = "01012023")
+        val alert1 = Alert(id = "1", type = AlertType.General.name, title = "Information Noël", body = "La braderie de noël aura lieu à l'arande le 9 décambre prochain ! \n N'oubliez pas de prévenir vos proches pour nous donner un coup de main le vendredi soir.", endDate = Date(Date.parse("2023-01-14")))
+        val alert2 = Alert(id = "2", type = AlertType.Urgency.name, title = "Attention urgent", body = "Il manque trois bénévoles pour le samedi 12 Novembre. \nCliquez ici pour vous inscrire", endDate = Date(Date.parse("2023-01-22")))
+        val alert3 = Alert(id = "3", type = AlertType.Team.name, title = "Tri des jouets", body = "Salut l'équipe, pour information des cartons de puzzle sont à vérifier dans le local", endDate = Date(Date.parse("2023-01-23")))
+        val alert4 = Alert(id = "4", type = AlertType.Shop.name, title = "Vacances de la Toussaint", body = "Le magasin sera fermé les samedis 23 Octobre et 2 Novembre", endDate = Date(Date.parse("2023-01-25")))
+        val alert5 = Alert(id = "5", type = AlertType.Assiduity.name, title = "On ne te vois plus !?", body = "On espère que tu vas bien ? \n Petit rappel : il est demandé de faire au moins un samedi par mois en tant que bénévole au magasin", endDate = Date(Date.parse("2023-01-28")))
 
 
         val comment1 = Comment(id="1", userId = "1", user = "Bob", text = "Un texte de commentaire", date = null)

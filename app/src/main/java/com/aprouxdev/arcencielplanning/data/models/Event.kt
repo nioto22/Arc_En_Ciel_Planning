@@ -14,4 +14,6 @@ class Event(
     val title: String,
     val description: String,
     val comments: List<Comment>
-) : Serializable
+) : Serializable {
+    companion object
+}

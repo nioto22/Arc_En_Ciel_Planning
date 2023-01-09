@@ -1,4 +1,4 @@
-package com.aprouxdev.arcencielplanning.data.services
+package com.aprouxdev.arcencielplanning.data.services.local
 
 import com.aprouxdev.arcencielplanning.data.models.Event
 import kotlinx.coroutines.flow.Flow

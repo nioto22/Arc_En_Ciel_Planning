@@ -1,5 +1,5 @@
-CREATE TABLE EventDB (
-id INTEGER NOT NULL PRIMARY KEY,
+CREATE TABLE EventDb (
+id TEXT NOT NULL PRIMARY KEY,
 date TEXT,
 time TEXT,
 team INTEGER NOT NULL,
@@ -11,14 +11,14 @@ comments TEXT
 
 
 getEventDBById:
-SELECT * FROM EventDB WHERE id = :id;
+SELECT * FROM EventDb WHERE id = :id;
 
 getAllEventDBs:
-SELECT * FROM EventDB;
+SELECT * FROM EventDb;
 
-insertEventDB:
-INSERT OR REPLACE INTO EventDB VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+insertOrReplaceEventDB:
+INSERT OR REPLACE INTO EventDb VALUES ?;
 
 deleteEventDBById:
-DELETE FROM EventDB
+DELETE FROM EventDb
 WHERE id = :id;

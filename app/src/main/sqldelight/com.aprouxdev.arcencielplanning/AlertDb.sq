@@ -1,0 +1,25 @@
+CREATE TABLE AlertDb (
+id TEXT NOT NULL PRIMARY KEY,
+body TEXT,
+endDate TEXT,
+title TEXT,
+type TEXT
+);
+
+
+
+getAlertById:
+SELECT * FROM AlertDb WHERE id = :id;
+
+getAllEvent:
+SELECT * FROM AlertDb;
+
+insertOrReplaceAlert:
+INSERT OR REPLACE INTO AlertDb VALUES ?;
+
+deleteAllAlert:
+DELETE FROM AlertDb;
+
+deleteAlertById:
+DELETE FROM AlertDb
+WHERE id = :id;

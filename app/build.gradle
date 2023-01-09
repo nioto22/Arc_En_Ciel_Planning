@@ -2,9 +2,14 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.squareup.sqldelight'
+    id 'com.google.gms.google-services'
 }
 
 android {
+    signingConfigs {
+        release {
+        }
+    }
     compileSdk 33
 
     defaultConfig {
@@ -43,6 +48,8 @@ android {
 
 dependencies {
 
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5' // keep 1.1.5 to fix desugaring issues
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
@@ -50,6 +57,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha03")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
 
     // Calendar

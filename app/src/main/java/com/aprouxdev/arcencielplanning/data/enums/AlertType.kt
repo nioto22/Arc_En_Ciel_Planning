@@ -9,5 +9,4 @@ enum class AlertType(val text: Int, val icon: Int, val color: Int, val backgroun
     Shop(text= R.string.alert_shop, icon= R.drawable.ic_alert_shopping, color= R.color.alert_green, background = R.drawable.background_alert_container_shop, chevronIcon= R.drawable.ic_alert_chevron_shop),
     Urgency(text= R.string.alert_urgency, icon= R.drawable.ic_alert_urgency, color= R.color.alert_red, background = R.drawable.background_alert_container_urgency, chevronIcon= R.drawable.ic_alert_chevron_urgency),
     Assiduity(text= R.string.alert_assiduity, icon= R.drawable.ic_alert_assiduity, color= R.color.alert_yellow, background = R.drawable.background_alert_container_assiduity, chevronIcon= R.drawable.ic_alert_chevron_assiduity)
-
 }

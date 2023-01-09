@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "10229742997",
+    "project_id": "arcenciel-3983e",
+    "storage_bucket": "arcenciel-3983e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10229742997:android:793653ace5f4ac8c97ca9c",
+        "android_client_info": {
+          "package_name": "com.aprouxdev.arcencielplanning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10229742997-nph5fi94j1b2bkc9salqkuqdrqirvq3m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4-uV0wqQS02OfKBrA8CP2gW6CV9Qeii8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10229742997-nph5fi94j1b2bkc9salqkuqdrqirvq3m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "10229742997-d1kgm507qmlng9bojmb31n2gshcn12c7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aprouxdev.arcenciel"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
