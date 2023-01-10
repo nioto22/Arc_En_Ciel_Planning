@@ -13,4 +13,10 @@
     <string name="button_delete">Supprimer</string>
     <string name="new_event_button">Créer un évènement</string>
     <string name="planning_no_item_placeholder">Aucun évènement de prévu à cette date</string>
+    <string name="login_title">Se connecter</string>
+    <string name="login_body">Veuillez saisir votre nom d’utilisateur et votre mot de passe fourni par l’association.</string>
+    <string name="login_name_hint">Nom d\'utilisateur</string>
+    <string name="login_password">Mot de passe</string>
+    <string name="login_button">Se connecter</string>
+    <string name="login_error">Erreur de nom ou de mot de passe, veuillez réessayer</string>
 </resources>

@@ -27,9 +27,6 @@ class SetupActivity : AppCompatActivity() {
         _binding = ActivitySetupBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        // TODO REMOVE AFTER TEST
-        val user = UserDb(id= "ydgdrg", name = "Antoine", isAdmin = true, imageUrl = null, teams= listOf("1", "2", "3", "5"))
-        database.userDbQueries.insertOrReplace(user)
 
         viewModel = ViewModelProvider(this)[SetupViewModel::class.java]
     }

@@ -4,6 +4,133 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_splash_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/login_view_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/login_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:layout_marginVertical="24dp">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="22dp"
+            android:fontFamily="@font/sf_pro_display_bold"
+            android:textSize="34sp"
+            android:textColor="@color/greys_700"
+            android:text="@string/login_title"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginVertical="6dp"
+            android:layout_marginHorizontal="28dp"
+            android:fontFamily="@font/sf_pro_text_medium"
+            android:textSize="15sp"
+            android:textColor="@color/greys_700"
+            android:text="@string/login_body"
+            />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/login_name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="16dp"
+            android:fontFamily="@font/sf_pro_text_regular"
+            android:textSize="18sp"
+            android:textColor="@color/greys_700"
+            android:hint="@string/login_name_hint"
+            android:background="@drawable/background_login_edit_text"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="12dp"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/login_password_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="16dp"
+            android:fontFamily="@font/sf_pro_text_regular"
+            android:textSize="18sp"
+            android:textColor="@color/greys_700"
+            android:hint="@string/login_password"
+            android:background="@drawable/background_login_edit_text"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="12dp"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/login_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:textColor="@color/alert_red"
+            android:fontFamily="@font/sf_pro_text_medium"
+            android:textSize="17sp"
+            android:text="@string/login_error"
+            android:layout_marginHorizontal="16dp"
+            android:visibility="gone"
+            />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:elevation="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/background_login_button"
+            android:padding="12dp"
+            android:layout_marginHorizontal="16dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/sf_pro_display_bold"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/login_button"
+                android:clickable="true"
+                android:focusable="true"
+                />
+            <ProgressBar
+                android:id="@+id/login_loader"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="18dp"
+                android:indeterminateTint="@color/white"
+                android:visibility="gone"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
