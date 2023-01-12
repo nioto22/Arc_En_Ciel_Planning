@@ -18,6 +18,8 @@ enum class Teams {
         }
     }
 
+
+
     fun getColorRes(): Int {
         return when(this) {
             Clothes -> R.color.team_sorting
@@ -27,5 +29,17 @@ enum class Teams {
             Cleaning -> R.color.team_cleaning
             Other -> R.color.team_other
         }
+    }
+}
+
+fun String.getTeamByName(): Teams {
+    return when(this) {
+        "Magasin" -> Teams.Shop
+        "Vêtements" -> Teams.Clothes
+        "Jouets" -> Teams.Toys
+        "Braderie" -> Teams.Braderie
+        "Ménage" -> Teams.Cleaning
+        "Autre" -> Teams.Other
+        else -> Teams.Other
     }
 }

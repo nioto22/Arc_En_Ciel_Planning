@@ -19,4 +19,12 @@
     <string name="login_password">Mot de passe</string>
     <string name="login_button">Se connecter</string>
     <string name="login_error">Erreur de nom ou de mot de passe, veuillez réessayer</string>
+    <string name="settings_title">Réglages</string>
+    <string name="settings_avatar_button">Modifier</string>
+    <string name="settings_user_name">Nom:</string>
+    <string name="settings_user_teams">Équipes: </string>
+    <string name="settings_add_user">Ajouter un membre</string>
+    <string name="settings_add_alert">Ajouter une information</string>
+    <string name="settings_contact_aec">Contacter Arc en Ciel</string>
+    <string name="settings_contact_support">Contacter le support de l\'application</string>
 </resources>

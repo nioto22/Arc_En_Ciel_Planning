@@ -1,5 +1,6 @@
 package com.aprouxdev.arcencielplanning
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.aprouxdev.arcencielplanning.data.services.local.LoginState
+import com.aprouxdev.arcencielplanning.data.services.local.database
 import com.aprouxdev.arcencielplanning.databinding.ActivityLoginBinding
 import com.aprouxdev.arcencielplanning.viewmodel.LoginViewModel
 import kotlinx.coroutines.flow.collect
@@ -54,7 +56,8 @@ class LoginActivity : AppCompatActivity() {
             viewModel.loginState.collect {
                 binding.loginLoader.isVisible = it == LoginState.Loading
                 if (it is LoginState.Logged) {
-                    viewModel.refreshAllData()
+                    database.userDbQueries.insertOrReplace(it.user)
+                    startActivity(Intent(this@LoginActivity, SetupActivity::class.java))
                 }
             }
         }

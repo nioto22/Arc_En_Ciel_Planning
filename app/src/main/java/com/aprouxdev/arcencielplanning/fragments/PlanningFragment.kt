@@ -9,15 +9,16 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprouxdev.arcencielplanning.adapters.PlanningEventAdapter
 import com.aprouxdev.arcencielplanning.adapters.PlanningEventListener
-import com.aprouxdev.arcencielplanning.data.mock.MockData
 import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.databinding.FragmentPlanningBinding
 import com.aprouxdev.arcencielplanning.extensions.getLegendName
 import com.aprouxdev.arcencielplanning.extensions.present
 import com.aprouxdev.arcencielplanning.modals.EventDetailModal
+import com.aprouxdev.arcencielplanning.viewmodel.PlanningViewModel
 import com.aprouxdev.arcencielplanning.views.calendar.DayViewContainer
 import com.aprouxdev.arcencielplanning.views.calendar.OnCalendarCallback
 import com.aprouxdev.arcencielplanning.views.calendar.WeekViewContainer
@@ -54,6 +55,8 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
     private var _binding: FragmentPlanningBinding? = null
     private val binding get() = requireNotNull(_binding)
 
+    private lateinit var viewModel: PlanningViewModel
+
     private var mSelectedDate: LocalDate = LocalDate.now()
     set(value) {
         field = value
@@ -75,28 +78,26 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlanningBinding.inflate(inflater, container, false)
-
+        viewModel = ViewModelProvider(this)[PlanningViewModel::class.java
+        ]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO REMOVE AFTER TEST MOCK ITEM
-        val today = LocalDate.now()
-        val itemOne = today.plusDays(3)
-        val itemTwo = today.plusDays(5)
-        val itemThree = today.plusDays(7)
-        val itemFour = today.plusDays(8)
-        val items = listOf(itemOne, itemTwo, itemThree, itemFour)
-        mAllItemsDate.addAll(items)
-
         setupUiViews()
-        setupUiListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupUiListeners()
+        setupDataObservers()
+    }
 
+    private fun setupDataObservers() {
 
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -197,8 +198,7 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
 
     private fun setupRecyclerView() {
         val hasItem = mAllItemsDate.contains(mSelectedDate)
-        val selectedItems = if (hasItem) listOf(MockData.event1, MockData.event6)//viewModel.getItemForDate(mSelectedDate)
-            else emptyList()
+        val selectedItems = viewModel.getItemForDate()
         if (this::mEventAdapter.isInitialized) {
             mEventAdapter.updateData(selectedItems)
         } else {

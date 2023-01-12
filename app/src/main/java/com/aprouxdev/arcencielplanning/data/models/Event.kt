@@ -10,10 +10,10 @@ class Event(
     var date: Date? = null,
     val time: String? = null,
     val team: Teams,
-    val users: List<String> = emptyList(),
-    val title: String,
-    val description: String,
-    val comments: List<Comment>
+    val users: List<String>? = null,
+    val title: String? = null,
+    val description: String? = null,
+    val comments: List<String>? = null
 ) : Serializable {
     companion object
 }

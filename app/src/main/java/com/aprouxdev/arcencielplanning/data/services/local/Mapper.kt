@@ -1,11 +1,14 @@
 package com.aprouxdev.arcencielplanning.data.services.local
 
+import com.aprouxdev.arcencielplanning.data.enums.getTeamByName
 import com.aprouxdev.arcencielplanning.data.models.Alert
 import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.data.models.User
 import comaprouxdevarcencielplanning.AlertDb
 import comaprouxdevarcencielplanning.EventDb
 import comaprouxdevarcencielplanning.UserDb
+import java.time.Instant
+import java.util.*
 
 
 fun UserDb.toUser(): User {
@@ -33,11 +36,24 @@ fun Event.toEventDb(): EventDb {
         id= this.id,
         date = this.date.toString(),
         time= this.time,
-        team= this.team.ordinal.toLong(),
-        users= this.users.joinToString(","),
-        title = this.title,
+        team= this.team.getName(),
+        users= this.users?.joinToString(","),
+        title = this.title ?: "",
         description= this.description,
-        comments = this.comments.joinToString(",")
+        comments = this.comments
+    )
+}
+
+fun EventDb.toEvent(): Event {
+    return Event(
+        id = this.id,
+        date = Date.from(Instant.parse(this.date)),
+        time = this.time,
+        team = this.team.getTeamByName(),
+        users = this.users?.split(","),
+        title = this.title,
+        description = this.description,
+        comments = this.comments
     )
 }
 

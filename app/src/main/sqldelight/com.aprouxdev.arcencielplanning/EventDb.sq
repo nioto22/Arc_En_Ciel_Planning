@@ -1,12 +1,14 @@
+import com.aprouxdev.arcencielplanning.data.models.Comment;
+
 CREATE TABLE EventDb (
 id TEXT NOT NULL PRIMARY KEY,
 date TEXT,
 time TEXT,
-team INTEGER NOT NULL,
+team TEXT NOT NULL,
 users TEXT,
 title TEXT NOT NULL,
 description TEXT,
-comments TEXT
+comments TEXT AS List<String>
 );
 
 

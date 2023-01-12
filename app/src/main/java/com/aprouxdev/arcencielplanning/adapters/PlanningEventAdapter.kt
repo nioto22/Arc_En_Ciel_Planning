@@ -90,22 +90,22 @@ public class PlanningEventAdapter(
              */
             // TODO SORT COMMENTS BY DATE AND WHAT IF DATE NULL
             // TODO MANAGE TEXT ELLIPSE
-            val commentsText =
-                if (item.comments.isEmpty()) context.getString(R.string.event_comment_hint)
-                else item.comments.joinToString("\n") { "${it.user}: ${it.text}" }
+           /* val commentsText =
+                if (item.comments.isNullOrEmpty()) context.getString(R.string.event_comment_hint)
+                else // TODO GET COMMENT
             val commentsColor =
-                if (item.comments.isEmpty()) R.color.greys_400 else R.color.greys_700
+                if (item.comments.isNullOrEmpty()) R.color.greys_400 else R.color.greys_700
             mCommentsTextView?.apply {
                 text = commentsText
                 setTextColor(ContextCompat.getColor(context, commentsColor))
-            }
+            }*/
 
             /*
             * SHOP TEAM ICON
              */
             mCheckIcon?.isInvisible = item.team != Teams.Shop
             if (item.team == Teams.Shop) {
-                val iconRes = if (item.users.size >= 3) R.drawable.ic_check else R.drawable.ic_bad
+                val iconRes = if ((item.users?.size ?: 0) >= 3) R.drawable.ic_check else R.drawable.ic_bad
                 mCheckIcon?.setImageDrawable(ContextCompat.getDrawable(context, iconRes))
             }
         }

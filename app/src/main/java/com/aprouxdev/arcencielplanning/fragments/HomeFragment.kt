@@ -25,6 +25,7 @@ import com.aprouxdev.arcencielplanning.extensions.hasNext
 import com.aprouxdev.arcencielplanning.extensions.hasPreview
 import com.aprouxdev.arcencielplanning.extensions.present
 import com.aprouxdev.arcencielplanning.modals.EventDetailModal
+import com.aprouxdev.arcencielplanning.modals.SettingsModal
 import java.util.*
 
 
@@ -45,6 +46,7 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
     private val binding get() = requireNotNull(_binding)
 
     private lateinit var mAlertAdapter: AlertAdapter
+    private var mAlertList: List<Alert> = emptyList()
     private lateinit var mHomeEventContainerAdapter: HomeEventAdapter
     private var mEventList: List<Event> = emptyList()
 
@@ -65,6 +67,26 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
         setupPlanningButtons()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupUiListeners()
+    }
+
+    private fun setupUiListeners() {
+        with(binding) {
+            homeUserAvatar.setOnClickListener {
+                showSettings()
+            }
+            homeUserAvatarText.setOnClickListener {
+                showSettings()
+            }
+        }
+    }
+
+    private fun showSettings() {
+        val settingsModal = SettingsModal.newInstance()
+        settingsModal.present(childFragmentManager, SettingsModal.TAG)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -73,21 +95,13 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
 
 
     private fun setupInformationRecyclerView() {
-        val alertList = listOf(
-            MockData.alert1,
-            MockData.alert2,
-            MockData.alert3,
-            MockData.alert4,
-            MockData.alert5
-        )
-
         if (this::mAlertAdapter.isInitialized) {
-            mAlertAdapter.updateData(alertList)
+            mAlertAdapter.updateData(mAlertList)
         } else {
             with(binding.homeInformationRecyclerview) {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 val snapHelper = PagerSnapHelper()
-                mAlertAdapter = AlertAdapter(alertList, this@HomeFragment)
+                mAlertAdapter = AlertAdapter(mAlertList, this@HomeFragment)
                 adapter = mAlertAdapter
                 snapHelper.attachToRecyclerView(this)
             }
@@ -96,42 +110,6 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
 
 
     private fun setupPlanningRecyclerView() {
-        //region MOCK DATA
-        val now = Calendar.getInstance(Locale.getDefault())
-        val date1 = Calendar.getInstance(Locale.getDefault()).apply {
-            add(Calendar.DAY_OF_MONTH, 1)
-        }.time
-        val date2 = Calendar.getInstance(Locale.getDefault()).apply {
-            add(Calendar.DAY_OF_MONTH, 1)
-        }.time
-        val date3 = Calendar.getInstance(Locale.getDefault()).apply {
-            add(Calendar.DAY_OF_MONTH, 2)
-        }.time
-        val date4 = Calendar.getInstance(Locale.getDefault()).apply {
-            add(Calendar.DAY_OF_MONTH, 8)
-        }.time
-        val date5 = Calendar.getInstance(Locale.getDefault()).apply {
-            add(Calendar.DAY_OF_MONTH, 9)
-        }.time
-        val date6 = Calendar.getInstance(Locale.getDefault()).apply {
-            add(Calendar.DAY_OF_MONTH, 32)
-        }.time
-        val date7 = Calendar.getInstance(Locale.getDefault()).apply {
-            add(Calendar.DAY_OF_MONTH, 32)
-        }.time
-        val date8 = Calendar.getInstance(Locale.getDefault()).apply {
-            add(Calendar.DAY_OF_MONTH, 55)
-        }.time
-        mEventList = listOf(MockData.event1.apply { date = date1 },
-            MockData.event2.apply { date = date2 },
-            MockData.event3.apply { date = date3 },
-            MockData.event4.apply { date = date4 },
-            MockData.event5.apply { date = date5 },
-            MockData.event6.apply { date = date6 },
-            MockData.event7.apply { date = date7 },
-            MockData.event8.apply { date = date8 })
-        //endregion
-
         if (this::mHomeEventContainerAdapter.isInitialized) {
             mHomeEventContainerAdapter.updateData(mEventList)
         } else {
