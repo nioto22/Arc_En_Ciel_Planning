@@ -1,5 +1,6 @@
 package com.aprouxdev.arcencielplanning.data.services.online
 
+import android.util.Log
 import com.aprouxdev.arcencielplanning.data.models.Alert
 import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.data.services.local.toAlertDb
@@ -15,6 +16,7 @@ fun QueryDocumentSnapshot.toEvent(): EventDb? {
         val event: Event = this.toObject()
         event.toEventDb()
     } catch (e: Exception) {
+        Log.d("TAG_DEBUG", "toEvent: exception = ${e.message}")
         null
     }
 }
@@ -24,6 +26,7 @@ fun QueryDocumentSnapshot.toAlert(): AlertDb? {
         val alert: Alert = this.toObject()
         alert.toAlertDb()
     } catch (e: Exception) {
+        Log.d("TAG_DEBUG", "toAlert: exception = ${e.message}")
         null
     }
 

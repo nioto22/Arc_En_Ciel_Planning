@@ -18,6 +18,7 @@ import com.aprouxdev.arcencielplanning.databinding.FragmentPlanningBinding
 import com.aprouxdev.arcencielplanning.extensions.getLegendName
 import com.aprouxdev.arcencielplanning.extensions.present
 import com.aprouxdev.arcencielplanning.modals.EventDetailModal
+import com.aprouxdev.arcencielplanning.modals.NewEventModal
 import com.aprouxdev.arcencielplanning.viewmodel.PlanningViewModel
 import com.aprouxdev.arcencielplanning.views.calendar.DayViewContainer
 import com.aprouxdev.arcencielplanning.views.calendar.OnCalendarCallback
@@ -34,14 +35,14 @@ import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
-import java.util.Locale
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallback,
     PlanningEventListener {
 
     companion object {
-        private val _today = LocalDate.now()
         const val TAG = "PlanningFragment"
         fun newInstance(): PlanningFragment {
             val args = Bundle()
@@ -215,14 +216,21 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
 
 
     private fun setupUiListeners() {
-        binding.calendarSelectDateButton.setOnClickListener {
-            val datePickerFragment = DatePickerDialogFragment.newInstance(
-                year = mSelectedDate.year,
-                month = mSelectedDate.monthValue - 1,
-                day = mSelectedDate.dayOfMonth,
-                listener = this
-            )
-            datePickerFragment.show(childFragmentManager, DatePickerDialogFragment.TAG)
+        with(binding) {
+            calendarSelectDateButton.setOnClickListener {
+                val datePickerFragment = DatePickerDialogFragment.newInstance(
+                    year = mSelectedDate.year,
+                    month = mSelectedDate.monthValue - 1,
+                    day = mSelectedDate.dayOfMonth,
+                    listener = this@PlanningFragment
+                )
+                datePickerFragment.show(childFragmentManager, DatePickerDialogFragment.TAG)
+            }
+            planningAddEventButton.setOnClickListener {
+                val date = Date(mSelectedDate.year, mSelectedDate.monthValue, mSelectedDate.dayOfMonth)
+                val addEventModal = NewEventModal.newInstance(date)
+                addEventModal.present(childFragmentManager, NewEventModal.TAG)
+            }
         }
     }
 

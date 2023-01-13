@@ -97,6 +97,7 @@
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/planning_add_event_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
@@ -111,6 +112,8 @@
                 android:text="@string/new_event_button"
                 android:includeFontPadding="false"
                 android:textAllCaps="false"
+                android:clickable="true"
+                android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 />
 

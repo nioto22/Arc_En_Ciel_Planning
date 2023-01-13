@@ -55,7 +55,7 @@ class EventDetailModal : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = ModalEventDetailBinding.inflate(inflater, container, false)
 
@@ -120,12 +120,12 @@ class EventDetailModal : BottomSheetDialogFragment() {
     private fun setupUiViews() {
         with(binding) {
             mEvent?.let {
-                val teamText = if (it.team == Teams.Other) it.title else it.team.getName()
+                val teamText = if (it.getTeamByName() == Teams.Other) it.title else it.getTeamByName().getName()
                 eventDetailTeam.text = teamText
                 eventDetailTeamCollapsed.text = teamText
 
                 eventDetailTitle.apply {
-                    isVisible = it.team != Teams.Other && it.title.isNotEmpty()
+                    isVisible = it.getTeamByName() != Teams.Other && it.title.isNullOrEmpty()
                     text = it.title
                 }
 

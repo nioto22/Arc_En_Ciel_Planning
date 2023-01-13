@@ -69,13 +69,13 @@ public class PlanningEventAdapter(
                 text = item.date?.formattedToString("dd MMMM yyyy")
             }
             mCardView?.apply {
-                setCardBackgroundColor(ContextCompat.getColor(context, item.team.getColorRes()))
+                setCardBackgroundColor(ContextCompat.getColor(context, item.getTeamByName().getColorRes()))
             }
             mTime?.apply {
                 isInvisible = item.time == null
                 text = item.time
             }
-            mTeam?.text = if (item.team == Teams.Other) item.title else item.team.getName()
+            mTeam?.text = if (item.getTeamByName() == Teams.Other) item.title else item.getTeamByName().getName()
 
             /*
             * AVATARS
@@ -103,8 +103,8 @@ public class PlanningEventAdapter(
             /*
             * SHOP TEAM ICON
              */
-            mCheckIcon?.isInvisible = item.team != Teams.Shop
-            if (item.team == Teams.Shop) {
+            mCheckIcon?.isInvisible = item.getTeamByName() != Teams.Shop
+            if (item.getTeamByName() == Teams.Shop) {
                 val iconRes = if ((item.users?.size ?: 0) >= 3) R.drawable.ic_check else R.drawable.ic_bad
                 mCheckIcon?.setImageDrawable(ContextCompat.getDrawable(context, iconRes))
             }

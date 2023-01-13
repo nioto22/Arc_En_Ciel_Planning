@@ -72,6 +72,7 @@ class SetupViewModel: ViewModel() {
                 //.whereEqualTo("capital", true)
             .get()
             .addOnSuccessListener { result ->
+                Log.d("TAG_DEBUG", "getAllEventsFromFirestore: result = $result")
                 for (document in result) {
                     val event : EventDb? = document.toEvent()
                     event?.let { database.eventDbQueries.insertOrReplaceEventDB(it) }
@@ -88,7 +89,9 @@ class SetupViewModel: ViewModel() {
         onlineDb.collection("alert")
             .get()
             .addOnSuccessListener { result ->
+                Log.d("TAG_DEBUG", "getAllAlertFromFirestore: result = $result")
                 for (document in result) {
+                    Log.d("TAG_DEBUG", "getAllAlertFromFirestore: Document = $document")
                     val alert: AlertDb? = document.toAlert()
                     alert?.let { database.alertDbQueries.insertOrReplaceAlert(it) }
                 }

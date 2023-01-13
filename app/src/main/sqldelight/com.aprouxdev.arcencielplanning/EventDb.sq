@@ -1,4 +1,4 @@
-import com.aprouxdev.arcencielplanning.data.models.Comment;
+import kotlin.collections.List;
 
 CREATE TABLE EventDb (
 id TEXT NOT NULL PRIMARY KEY,

@@ -11,12 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
-import androidx.recyclerview.widget.SnapHelper
 import com.aprouxdev.arcencielplanning.adapters.AlertAdapter
 import com.aprouxdev.arcencielplanning.adapters.AlertCallback
 import com.aprouxdev.arcencielplanning.adapters.HomeEventAdapter
 import com.aprouxdev.arcencielplanning.adapters.HomeEventListener
-import com.aprouxdev.arcencielplanning.data.mock.MockData
 import com.aprouxdev.arcencielplanning.data.models.Alert
 import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.databinding.FragmentHomeBinding
@@ -26,7 +24,6 @@ import com.aprouxdev.arcencielplanning.extensions.hasPreview
 import com.aprouxdev.arcencielplanning.extensions.present
 import com.aprouxdev.arcencielplanning.modals.EventDetailModal
 import com.aprouxdev.arcencielplanning.modals.SettingsModal
-import java.util.*
 
 
 class HomeFragment : Fragment(), AlertCallback, HomeEventListener {

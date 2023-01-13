@@ -44,15 +44,15 @@ class AlertAdapter(var data: List<Alert>, private val listener: AlertCallback) :
         private var mAlertButton: AppCompatImageButton? = itemView.findViewById(R.id.alert_button)
 
         fun bind(item: Alert, listener: AlertCallback) = with(itemView) {
-            itemView.background = ContextCompat.getDrawable(context, item.getType().background)
+            itemView.background = ContextCompat.getDrawable(context, item.getTypeByName().background)
 
-            mIcon?.setImageDrawable(ContextCompat.getDrawable(context, item.getType().icon))
-            mAlertTypeTv?.text = context.getString(item.getType().text)
+            mIcon?.setImageDrawable(ContextCompat.getDrawable(context, item.getTypeByName().icon))
+            mAlertTypeTv?.text = context.getString(item.getTypeByName().text)
 
             mAlertTitle?.text = item.title
             mAlertBody?.text = item.body
 
-            mAlertButton?.setImageDrawable(ContextCompat.getDrawable(context, item.getType().chevronIcon))
+            mAlertButton?.setImageDrawable(ContextCompat.getDrawable(context, item.getTypeByName().chevronIcon))
             mAlertButton?.setOnClickListener {
                 listener.onAlertClicked(item)
             }

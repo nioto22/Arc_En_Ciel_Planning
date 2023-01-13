@@ -2,18 +2,19 @@ package com.aprouxdev.arcencielplanning.data.models
 
 import com.aprouxdev.arcencielplanning.data.enums.AlertType
 import java.io.Serializable
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 data class Alert(
-    val id: String,
-    val type: String,
-    val title: String,
-    val body: String,
-    val endDate: Date
+    val id: String = "dde",
+    val type: String? = null,
+    val title: String? = null,
+    val body: String? = null,
+    val endDate: Date? = null
 ) : Serializable {
 
-    fun getType(): AlertType {
+
+
+    fun getTypeByName(): AlertType {
         return when (type) {
             "General" -> AlertType.General
             "Team" -> AlertType.Team

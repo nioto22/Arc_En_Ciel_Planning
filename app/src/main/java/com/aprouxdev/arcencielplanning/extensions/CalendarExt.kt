@@ -2,6 +2,7 @@ package com.aprouxdev.arcencielplanning.extensions
 
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.util.*
 
 fun Date.formattedToString(pattern: String): String {
@@ -26,4 +27,14 @@ fun DayOfWeek.getLegendName(): String {
         "SUNDAY" -> "Dim"
         else -> "Err"
     }
+}
+
+fun Int.toTimeString(): String {
+    var st = this.toString()
+    if (st.length < 2) st = "0$st"
+    return st
+}
+
+fun LocalDate.toDate(): Date {
+    return Date(this.year, this.monthValue, this.dayOfMonth)
 }

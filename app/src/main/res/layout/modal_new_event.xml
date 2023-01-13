@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:hint="Décrire le type d'évènement"
+                    android:hint="Décrire le type d'évènement (facultatif)"
                     android:fontFamily="@font/sf_pro_text_medium"
                     android:textSize="17sp"
                     android:imeOptions="actionSend"
@@ -129,7 +129,7 @@
                     android:gravity="start|top"
                     android:background="@drawable/background_new_event_item_small_corners"
                     app:layout_constraintTop_toBottomOf="@+id/new_event_team_container"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
 
                 <androidx.appcompat.widget.LinearLayoutCompat

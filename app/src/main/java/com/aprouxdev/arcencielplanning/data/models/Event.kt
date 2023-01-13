@@ -1,19 +1,25 @@
 package com.aprouxdev.arcencielplanning.data.models
 
 import com.aprouxdev.arcencielplanning.data.enums.Teams
+import com.aprouxdev.arcencielplanning.data.enums.getTeamByName
+import com.aprouxdev.arcencielplanning.utils.getUuid
 import java.io.Serializable
 import java.util.*
 
 
 class Event(
-    val id: String,
+    val id: String = getUuid(),
     var date: Date? = null,
-    val time: String? = null,
-    val team: Teams,
+    var time: String? = null,
+    var team: String = "Général",
     val users: List<String>? = null,
-    val title: String? = null,
+    var title: String? = null,
     val description: String? = null,
-    val comments: List<String>? = null
+    var comments: List<String>? = null
 ) : Serializable {
+    fun getTeamByName(): Teams {
+        return team.getTeamByName()
+    }
+
     companion object
 }

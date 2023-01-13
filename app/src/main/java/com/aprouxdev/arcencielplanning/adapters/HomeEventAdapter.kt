@@ -65,13 +65,13 @@ class HomeEventAdapter(
             }
             mDate.text = item.date?.formattedToString("dd MMMM yyyy")
             mCardView?.apply {
-                setCardBackgroundColor(ContextCompat.getColor(context, item.team.getColorRes()))
+                setCardBackgroundColor(ContextCompat.getColor(context, item.getTeamByName().getColorRes()))
             }
             mTime?.apply {
                 isInvisible = item.time == null
                 text = item.time
             }
-            mTeam?.text = if (item.team == Teams.Other) item.title else item.team.getName()
+            mTeam?.text = if (item.getTeamByName() == Teams.Other) item.title else item.getTeamByName().getName()
 
             /*
             * AVATARS
@@ -86,7 +86,7 @@ class HomeEventAdapter(
              */
             // TODO SORT COMMENTS BY DATE AND WHAT IF DATE NULL
             // TODO MANAGE TEXT ELLIPSE
-            val commentsText =
+            /*val commentsText =
                 if (item.comments.isEmpty()) context.getString(R.string.event_comment_hint)
                 else item.comments.joinToString("\n") { "${it.user}: ${it.text}" }
             val commentsColor =
@@ -94,14 +94,14 @@ class HomeEventAdapter(
             mCommentsTextView?.apply {
                 text = commentsText
                 setTextColor(ContextCompat.getColor(context, commentsColor))
-            }
+            }*/
 
             /*
             * SHOP TEAM ICON
              */
-            mCheckIcon?.isInvisible = item.team != Teams.Shop
-            if (item.team == Teams.Shop) {
-                val iconRes = if (item.users.size >= 3) R.drawable.ic_check else R.drawable.ic_bad
+            mCheckIcon?.isInvisible = item.getTeamByName() != Teams.Shop
+            if (item.getTeamByName() == Teams.Shop) {
+                val iconRes = if ((item.users?.size ?: 0) >= 3) R.drawable.ic_check else R.drawable.ic_bad
                 mCheckIcon?.setImageDrawable(ContextCompat.getDrawable(context, iconRes))
             }
         }
