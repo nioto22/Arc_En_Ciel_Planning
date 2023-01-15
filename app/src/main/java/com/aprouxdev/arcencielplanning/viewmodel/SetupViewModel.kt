@@ -3,6 +3,7 @@ package com.aprouxdev.arcencielplanning.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aprouxdev.arcencielplanning.data.services.local.EventService
 import com.aprouxdev.arcencielplanning.data.services.local.LoginState
 import com.aprouxdev.arcencielplanning.data.services.local.UserService
 import com.aprouxdev.arcencielplanning.data.services.local.database
@@ -72,7 +73,9 @@ class SetupViewModel: ViewModel() {
                 //.whereEqualTo("capital", true)
             .get()
             .addOnSuccessListener { result ->
-                Log.d("TAG_DEBUG", "getAllEventsFromFirestore: result = $result")
+                if (!result.isEmpty) {
+                    database.eventDbQueries.deleteAllEvents()
+                }
                 for (document in result) {
                     val event : EventDb? = document.toEvent()
                     event?.let { database.eventDbQueries.insertOrReplaceEventDB(it) }
@@ -89,6 +92,9 @@ class SetupViewModel: ViewModel() {
         onlineDb.collection("alert")
             .get()
             .addOnSuccessListener { result ->
+                if (!result.isEmpty) {
+                    database.alertDbQueries.deleteAllAlert()
+                }
                 Log.d("TAG_DEBUG", "getAllAlertFromFirestore: result = $result")
                 for (document in result) {
                     Log.d("TAG_DEBUG", "getAllAlertFromFirestore: Document = $document")

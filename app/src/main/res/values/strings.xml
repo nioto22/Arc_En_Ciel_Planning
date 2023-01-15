@@ -27,4 +27,7 @@
     <string name="settings_add_alert">Ajouter une information</string>
     <string name="settings_contact_aec">Contacter Arc en Ciel</string>
     <string name="settings_contact_support">Contacter le support de l\'application</string>
+    <string name="event_already_exist_multiple">Certains évènements sélectionnés existent déjà. Seuls les nouveaux évènements seront créés</string>
+    <string name="event_alreasy_exist">Un évènement %s existe déjà pour cette date et heure</string>
+    <string name="unknown_error">Une erreur inconnue s\'est produite, veuillez réessayer</string>
 </resources>

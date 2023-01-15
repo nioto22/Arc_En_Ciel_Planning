@@ -2,6 +2,7 @@ package com.aprouxdev.arcencielplanning.fragments
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.aprouxdev.arcencielplanning.MainActivity
 import com.aprouxdev.arcencielplanning.adapters.PlanningEventAdapter
 import com.aprouxdev.arcencielplanning.adapters.PlanningEventListener
 import com.aprouxdev.arcencielplanning.data.models.Event
@@ -227,8 +229,12 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
                 datePickerFragment.show(childFragmentManager, DatePickerDialogFragment.TAG)
             }
             planningAddEventButton.setOnClickListener {
-                val date = Date(mSelectedDate.year, mSelectedDate.monthValue, mSelectedDate.dayOfMonth)
-                val addEventModal = NewEventModal.newInstance(date)
+                Log.d("TAG_DEBUG", "setupUiListeners: YEAR = ${mSelectedDate.year}")
+                //val date = Date(mSelectedDate.year, mSelectedDate.monthValue - 1, mSelectedDate.dayOfMonth)
+                val date = Calendar.getInstance().apply {
+                    set(mSelectedDate.year, mSelectedDate.monthValue -1, mSelectedDate.dayOfMonth)
+                }
+                val addEventModal = NewEventModal.newInstance(date, listener = (activity as MainActivity))
                 addEventModal.present(childFragmentManager, NewEventModal.TAG)
             }
         }

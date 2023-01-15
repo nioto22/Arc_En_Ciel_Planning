@@ -2,18 +2,22 @@ package com.aprouxdev.arcencielplanning
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import com.aprouxdev.arcencielplanning.data.services.local.EventService
 import com.aprouxdev.arcencielplanning.databinding.ActivityMainBinding
 import com.aprouxdev.arcencielplanning.extensions.present
 import com.aprouxdev.arcencielplanning.fragments.HomeFragment
 import com.aprouxdev.arcencielplanning.fragments.PlanningFragment
+import com.aprouxdev.arcencielplanning.modals.EventDetailModal
+import com.aprouxdev.arcencielplanning.modals.NewEventCallback
 import com.aprouxdev.arcencielplanning.modals.NewEventModal
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewEventCallback {
 
     companion object {
         private const val BottomNavSelectedColor = R.color.colorPrimaryLight
@@ -108,9 +112,19 @@ class MainActivity : AppCompatActivity() {
             tabPlanningText.setTextColor(ContextCompat.getColor(this@MainActivity, planningColor))
 
             addEventButton.setOnClickListener {
-                val addEventModal = NewEventModal.newInstance()
+                val addEventModal = NewEventModal.newInstance(listener = this@MainActivity)
                 addEventModal.present(supportFragmentManager, NewEventModal.TAG)
             }
+        }
+    }
+
+    override fun onEventCalled(eventId: String) {
+        EventService.instance.getEventById(eventId)?.let {
+            val eventModal = EventDetailModal.newInstance(it)
+            eventModal.present(supportFragmentManager, EventDetailModal.TAG)
+
+        } ?: kotlin.run {
+            Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show()
         }
     }
 }

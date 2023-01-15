@@ -6,10 +6,12 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.aprouxdev.arcencielplanning.R
@@ -17,8 +19,10 @@ import com.aprouxdev.arcencielplanning.data.enums.Teams
 import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.databinding.ModalNewEventBinding
 import com.aprouxdev.arcencielplanning.extensions.formattedToString
+import com.aprouxdev.arcencielplanning.extensions.present
 import com.aprouxdev.arcencielplanning.extensions.toTimeString
 import com.aprouxdev.arcencielplanning.utils.getUuid
+import com.aprouxdev.arcencielplanning.viewmodel.EventExistenceState
 import com.aprouxdev.arcencielplanning.viewmodel.NewEventViewModel
 import com.aprouxdev.arcencielplanning.viewmodel.ProcessState
 import com.aprouxdev.arcencielplanning.views.TeamButtonCallback
@@ -26,17 +30,20 @@ import com.aprouxdev.arcencielplanning.views.TeamsButton
 import com.aprouxdev.arcencielplanning.views.TimePickerDialogCallback
 import com.aprouxdev.arcencielplanning.views.TimePickerDialogFragment
 import com.aprouxdev.arcencielplanning.views.dialogfragments.*
-import com.aprouxdev.arcencielplanning.views.dialogfragments.Period.*
+import com.aprouxdev.arcencielplanning.views.dialogfragments.Period.DAY
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.io.Serializable
 import java.lang.Float.max
 import java.lang.Float.min
 import java.util.*
 
 data class Frequency(val incrementedDay: Int, val repetition: Int)
+interface NewEventCallback : Serializable {
+    fun onEventCalled(eventId: String)
+}
 
 class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePickerDialogCallback,
     DatePickerDialogCallback, EventFrequencyCallback {
@@ -44,9 +51,11 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
     companion object {
         const val TAG = "NewEventModal"
         private const val ARG_DATE = "ARG_DATE"
-        fun newInstance(date: Date? = null): NewEventModal {
+        private const val ARG_CALLBACK = "ARG_CALLBACK"
+        fun newInstance(date: Calendar? = null, listener: NewEventCallback): NewEventModal {
             val args = Bundle()
             args.putSerializable(ARG_DATE, date)
+            args.putSerializable(ARG_CALLBACK, listener)
             val fragment = NewEventModal()
             fragment.arguments = args
             return fragment
@@ -64,11 +73,12 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private var mSelectedTeam: Teams? = null
-    set(value) {
-        field = value
-        binding.newEventValidateButton.isEnabled = value != null
-    }
+        set(value) {
+            field = value
+            binding.newEventValidateButton.isEnabled = value != null
+        }
     private lateinit var mSelectedDate: Date
+    private var mListener: NewEventCallback? = null
     private var mSelectedHour: Int = 8
     private var mSelectedMinute: Int = 0
     private var mComment: String? = null
@@ -84,7 +94,10 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
     ///////////////////////////////////////////////////////////////////////////
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSelectedDate = arguments?.getSerializable(ARG_DATE) as Date? ?: Calendar.getInstance().time
+        val cal = arguments?.getSerializable(ARG_DATE) as Calendar? ?: Calendar.getInstance()
+        mSelectedDate = cal.time
+        Log.d("TAG_DEBUG", "onCreate: mSelected date = $mSelectedDate")
+        mListener = arguments?.getSerializable(ARG_CALLBACK) as NewEventCallback
     }
 
     override fun onCreateView(
@@ -153,13 +166,59 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
     private fun setupDataObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.processState.collect {
-                updateDialogState(it)
+                if (it == ProcessState.Close) {
+                    this@NewEventModal.dismiss()
+                } else {
+                    updateDialogState(it)
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.alreadyExist.collect {
+                updateAlreadyExistViews(it)
             }
         }
     }
 
+    private fun updateAlreadyExistViews(state: EventExistenceState?) {
+        with(binding) {
+            state?.let {
+                val text = if (state.isMultipleFrequency) getString(R.string.event_already_exist_multiple)
+                else String.format(getString(R.string.event_alreasy_exist), it.teams?.getName() ?: "")
+                newEventAlreadyExistText.text = text
+
+                eventAlreadyExistSeeButton.apply {
+                    isVisible = !it.isMultipleFrequency
+                    setOnClickListener {
+                        openAlreadyExistEvent(state.eventId)
+                    }
+                }
+            }
+
+            newEventAlreadyExistContainer.isVisible = state != null
+        }
+    }
+
+    private fun openAlreadyExistEvent(eventId: String?) {
+        eventId?.let {
+            mListener?.onEventCalled(it)
+            this.dismiss()
+        }
+    }
+
     private fun updateDialogState(state: ProcessState) {
-        
+        val dialogFragment = childFragmentManager.findFragmentByTag(ProcessStateDialogFragment.TAG)
+        when {
+            state == ProcessState.None && dialogFragment is ProcessStateDialogFragment ->
+                dialogFragment.dismiss()
+            dialogFragment is ProcessStateDialogFragment ->
+                dialogFragment.updateState(state)
+            state != ProcessState.None && dialogFragment == null -> {
+                val newDialog = ProcessStateDialogFragment.newInstance(state)
+                newDialog.present(childFragmentManager, ProcessStateDialogFragment.TAG)
+            }
+            else -> Unit
+        }
     }
     //endregion
 
@@ -235,7 +294,11 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
             time = date
             add(Calendar.DAY_OF_MONTH, 1)
         }
-        return listOf(previousDate.formattedToString("EEE d MMM yyyy"), selectedDate.formattedToString("EEE d MMM yyyy"), nextDate.formattedToString("EEE d MMM yyyy"))
+        return listOf(
+            previousDate.formattedToString("EEE d MMM yyyy"),
+            selectedDate.formattedToString("EEE d MMM yyyy"),
+            nextDate.formattedToString("EEE d MMM yyyy")
+        )
     }
 
     //endregion
@@ -262,7 +325,7 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
             /*
             * COMMENT EDIT TEXT
              */
-            newEventCommentEditText.addTextChangedListener(object: TextWatcher{
+            newEventCommentEditText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 }
 
@@ -276,7 +339,7 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
             /*
             * OTHER TEAM EDIT TEXT
              */
-            newEventOtherTeamEditText.addTextChangedListener(object: TextWatcher{
+            newEventOtherTeamEditText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 }
 
@@ -320,7 +383,7 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
         mEventTitle?.let { event.title = it }
         event.date = mSelectedDate
         event.time = "${mSelectedHour.toTimeString()}:${mSelectedMinute.toTimeString()}"
-        mComment?.let { event.comments = listOf(it)}
+        mComment?.let { event.comments = listOf(it) }
 
         viewModel.addEvent(
             event = event,
@@ -337,12 +400,17 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
             numberOf = mFrequencyNumber,
             period = mFrequencyPeriod,
             frequency = frequencyPosition + 1,
-            listener = this)
+            listener = this
+        )
         frequencyDialog.show(childFragmentManager, EventFrequencyDialogFragment.TAG)
     }
 
     private fun openTimePickerDialog() {
-        val timePickerDialog = TimePickerDialogFragment.newInstance(hour= mSelectedHour, minute= mSelectedMinute, listener = this)
+        val timePickerDialog = TimePickerDialogFragment.newInstance(
+            hour = mSelectedHour,
+            minute = mSelectedMinute,
+            listener = this
+        )
         timePickerDialog.show(childFragmentManager, TimePickerDialogFragment.TAG)
     }
 
@@ -352,19 +420,22 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
-        val datePickerDialog = DatePickerDialogFragment.newInstance(year, month, day, listener = this)
+        val datePickerDialog =
+            DatePickerDialogFragment.newInstance(year, month, day, listener = this)
         datePickerDialog.show(childFragmentManager, DatePickerDialogFragment.TAG)
     }
 
     override fun onTeamButtonClicked(team: Teams) {
         mSelectedTeam = team
         setupTeamsButton()
+        viewModel.updateData(teams = mSelectedTeam)
     }
 
     override fun onTimeSelected(hour: Int, minute: Int) {
         mSelectedHour = hour
         mSelectedMinute = minute
         setupDateTimePicker()
+        viewModel.updateData(selectedHour = mSelectedHour, selectedMinute = mSelectedMinute)
     }
 
     override fun onDateSelected(year: Int, month: Int, day: Int) {
@@ -374,6 +445,7 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
         cal.set(Calendar.DAY_OF_MONTH, day)
         mSelectedDate = cal.time
         setupDateTimePicker()
+        viewModel.updateData(selectedDate = mSelectedDate)
     }
 
     override fun onEventFrequencySelected(
@@ -388,20 +460,23 @@ class NewEventModal : BottomSheetDialogFragment(), TeamButtonCallback, TimePicke
         val number = if (numberOf == 1) "" else numberOf.toString()
         val frequencyText = "$prefix$number ${period.value} $frequency fois"
         binding.newEventFrequencyButton.text = frequencyText
+        viewModel.updateData(frequencyNumber = mFrequencyNumber, frequencyPeriod = mFrequencyPeriod, repetition = mFrequency)
     }
+
+
 
     override fun cancelFrequency() {
         mFrequencyNumber = 1
         mFrequencyPeriod = DAY
         mFrequency = 1
         binding.newEventFrequencyButton.text = "Aucune"
+        viewModel.updateData(frequencyNumber = mFrequencyNumber, frequencyPeriod = mFrequencyPeriod, repetition = mFrequency)
     }
 
 
     //endregion
 
 }
-
 
 
 fun Int.formattedTwoNumbers(): String {

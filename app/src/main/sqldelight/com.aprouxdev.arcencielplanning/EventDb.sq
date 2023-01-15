@@ -15,6 +15,9 @@ comments TEXT AS List<String>
 getEventDBById:
 SELECT * FROM EventDb WHERE id = :id;
 
+getAllEventByDate:
+SELECT * FROM EventDb WHERE date = :date;
+
 getAllEventDBs:
 SELECT * FROM EventDb;
 
@@ -24,3 +27,6 @@ INSERT OR REPLACE INTO EventDb VALUES ?;
 deleteEventDBById:
 DELETE FROM EventDb
 WHERE id = :id;
+
+deleteAllEvents:
+DELETE FROM EventDb;

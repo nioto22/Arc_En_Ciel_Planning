@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.aprouxdev.arcencielplanning.R
-import com.aprouxdev.arcencielplanning.databinding.DialogFragmentEventFrequencyBinding
 import com.aprouxdev.arcencielplanning.databinding.DialogFragmentProcessStateBinding
 import com.aprouxdev.arcencielplanning.viewmodel.ProcessState
 
@@ -60,7 +59,9 @@ class ProcessStateDialogFragment: DialogFragment() {
             }
             processStateImage.apply {
                 isVisible = drawableRes != 0
-                setImageDrawable(ContextCompat.getDrawable(context, drawableRes))
+                if (drawableRes != 0) {
+                    setImageDrawable(ContextCompat.getDrawable(context, drawableRes))
+                }
             }
 
             val dialogText = when(val state = mState) {
