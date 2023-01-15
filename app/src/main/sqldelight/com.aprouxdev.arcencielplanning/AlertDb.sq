@@ -1,7 +1,9 @@
+import java.util.Date;
+
 CREATE TABLE AlertDb (
 id TEXT NOT NULL PRIMARY KEY,
 body TEXT,
-endDate TEXT,
+endDate TEXT AS Date,
 title TEXT,
 type TEXT
 );
@@ -11,7 +13,7 @@ type TEXT
 getAlertById:
 SELECT * FROM AlertDb WHERE id = :id;
 
-getAllEvent:
+getAllAlerts:
 SELECT * FROM AlertDb;
 
 insertOrReplaceAlert:

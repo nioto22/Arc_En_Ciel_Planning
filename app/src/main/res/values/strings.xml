@@ -12,7 +12,8 @@
     <string name="button_validate">Valider</string>
     <string name="button_delete">Supprimer</string>
     <string name="new_event_button">Créer un évènement</string>
-    <string name="planning_no_item_placeholder">Aucun évènement de prévu à cette date</string>
+    <string name="planning_no_item_placeholder">Aucun évènement prévu à cette date</string>
+    <string name="home_no_event_placeholder">Vous n\'êtes inscrit(e) dans aucun évènement prochainement</string>
     <string name="login_title">Se connecter</string>
     <string name="login_body">Veuillez saisir votre nom d’utilisateur et votre mot de passe fourni par l’association.</string>
     <string name="login_name_hint">Nom d\'utilisateur</string>
@@ -30,4 +31,5 @@
     <string name="event_already_exist_multiple">Certains évènements sélectionnés existent déjà. Seuls les nouveaux évènements seront créés</string>
     <string name="event_alreasy_exist">Un évènement %s existe déjà pour cette date et heure</string>
     <string name="unknown_error">Une erreur inconnue s\'est produite, veuillez réessayer</string>
+    <string name="home_no_alert_placeholder">Aucune information pour le moment</string>
 </resources>

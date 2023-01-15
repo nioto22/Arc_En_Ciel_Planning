@@ -11,26 +11,25 @@ import comaprouxdevarcencielplanning.EventDb
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.Date
+import java.util.*
 
 
 class PlanningViewModel: ViewModel() {
 
     private val events: Flow<List<EventDb>> =
         database.eventDbQueries
-            .getAllEventDBs()
+            .getAllEventOverDate(Calendar.getInstance(Locale.getDefault()).time)
             .asFlow()
             .filterNotNull()
             .mapToList()
             .distinctUntilChanged()
 
     private var eventList: List<EventDb> = emptyList()
+    private var mSelectedDate: Date? = Calendar.getInstance(Locale.getDefault()).time
 
-    private val _allDatesWithItem: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
-    val allDatesWithItem: StateFlow<List<String>> get() = _allDatesWithItem
+    private val _allDatesWithItem: MutableStateFlow<List<Date>> = MutableStateFlow(emptyList())
+    val allDatesWithItem: StateFlow<List<Date>> get() = _allDatesWithItem
 
-    private val _selectedDate: MutableStateFlow<String?> = MutableStateFlow(null)
-    val selectedDate: StateFlow<String?> get() = _selectedDate
 
     init {
         listenToEvent()
@@ -46,11 +45,11 @@ class PlanningViewModel: ViewModel() {
     }
 
     fun getItemForDate(): List<Event> {
-        return eventList.filter { it.date == _selectedDate.value }.map { it.toEvent() }
+        return eventList.filter { it.date == mSelectedDate }.map { it.toEvent() }
     }
 
-    fun selectDate(date: String) {
-        _selectedDate.value = date
+    fun selectDate(date: Date) {
+        mSelectedDate = date
     }
 
 }

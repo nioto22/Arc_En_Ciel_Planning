@@ -91,7 +91,7 @@
                 android:layout_marginTop="64dp"
                 android:layout_marginHorizontal="64dp"
                 android:fontFamily="@font/sf_pro_text_semibold"
-                android:textSize="26sp"
+                android:textSize="17sp"
                 android:textColor="@color/greys_300"
                 android:text="@string/planning_no_item_placeholder"
                 />
@@ -100,7 +100,7 @@
                 android:id="@+id/planning_add_event_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="22dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:paddingVertical="6dp"

@@ -15,12 +15,19 @@ internal class EventService {
     }
 
     fun isEventExist(date: Date, time: String, teams: Teams): String? {
-        val event = database.eventDbQueries.getAllEventByDate(date.formattedToString("yyyyMMdd"))
+        val event = database.eventDbQueries.getAllEventByDate(date)
             .executeAsList()
         return event.filter { it.time == time && it.team == teams.getName()}.map { it.id }.firstOrNull()
     }
 
     fun getEventById(eventId: String): Event? {
         return database.eventDbQueries.getEventDBById(eventId).executeAsOneOrNull()?.toEvent()
+    }
+
+    fun getAllEvents(date: Date): List<Event> {
+        return database.eventDbQueries
+            .getAllEventOverDate(date)
+            .executeAsList().map { it.toEvent() }
+
     }
 }

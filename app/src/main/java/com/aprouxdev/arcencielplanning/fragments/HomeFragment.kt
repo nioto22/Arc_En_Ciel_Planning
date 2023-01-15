@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +26,8 @@ import com.aprouxdev.arcencielplanning.extensions.hasPreview
 import com.aprouxdev.arcencielplanning.extensions.present
 import com.aprouxdev.arcencielplanning.modals.EventDetailModal
 import com.aprouxdev.arcencielplanning.modals.SettingsModal
+import com.aprouxdev.arcencielplanning.viewmodel.HomeViewModel
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
@@ -42,6 +46,8 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = requireNotNull(_binding)
 
+    private lateinit var viewModel: HomeViewModel
+
     private lateinit var mAlertAdapter: AlertAdapter
     private var mAlertList: List<Alert> = emptyList()
     private lateinit var mHomeEventContainerAdapter: HomeEventAdapter
@@ -53,20 +59,37 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupInformationRecyclerView()
-        setupPlanningRecyclerView()
+        setupEventRecyclerView()
         setupPlanningButtons()
     }
 
     override fun onResume() {
         super.onResume()
+        setupDataObservers()
         setupUiListeners()
+    }
+
+    private fun setupDataObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.alertList.collect {
+                mAlertList = it
+                setupInformationRecyclerView()
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.eventList.collect {
+                mEventList = it
+                setupEventRecyclerView()
+            }
+        }
+
     }
 
     private fun setupUiListeners() {
@@ -92,6 +115,8 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
 
 
     private fun setupInformationRecyclerView() {
+        binding.homeInformationRecyclerview.isVisible = mAlertList.isNotEmpty()
+        binding.homeInformationPlaceholder.isVisible = mAlertList.isEmpty()
         if (this::mAlertAdapter.isInitialized) {
             mAlertAdapter.updateData(mAlertList)
         } else {
@@ -106,7 +131,9 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
     }
 
 
-    private fun setupPlanningRecyclerView() {
+    private fun setupEventRecyclerView() {
+        binding.homeEventRecyclerviewContainer.isVisible = mEventList.isNotEmpty()
+        binding.homeEventPlaceholder.isVisible = mEventList.isEmpty()
         if (this::mHomeEventContainerAdapter.isInitialized) {
             mHomeEventContainerAdapter.updateData(mEventList)
         } else {

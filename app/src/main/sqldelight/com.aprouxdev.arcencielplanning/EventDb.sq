@@ -1,8 +1,9 @@
+import java.util.Date;
 import kotlin.collections.List;
 
 CREATE TABLE EventDb (
 id TEXT NOT NULL PRIMARY KEY,
-date TEXT,
+date TEXT AS Date,
 time TEXT,
 team TEXT NOT NULL,
 users TEXT,
@@ -17,6 +18,9 @@ SELECT * FROM EventDb WHERE id = :id;
 
 getAllEventByDate:
 SELECT * FROM EventDb WHERE date = :date;
+
+getAllEventOverDate:
+SELECT * FROM EventDb WHERE date >= :date;
 
 getAllEventDBs:
 SELECT * FROM EventDb;

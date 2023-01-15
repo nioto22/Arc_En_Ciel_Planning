@@ -11,6 +11,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprouxdev.arcencielplanning.MainActivity
 import com.aprouxdev.arcencielplanning.adapters.PlanningEventAdapter
@@ -19,6 +20,8 @@ import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.databinding.FragmentPlanningBinding
 import com.aprouxdev.arcencielplanning.extensions.getLegendName
 import com.aprouxdev.arcencielplanning.extensions.present
+import com.aprouxdev.arcencielplanning.extensions.toDate
+import com.aprouxdev.arcencielplanning.extensions.toLocaleDate
 import com.aprouxdev.arcencielplanning.modals.EventDetailModal
 import com.aprouxdev.arcencielplanning.modals.NewEventModal
 import com.aprouxdev.arcencielplanning.viewmodel.PlanningViewModel
@@ -32,9 +35,12 @@ import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.yearMonth
 import com.kizitonwose.calendar.view.WeekDayBinder
 import com.kizitonwose.calendar.view.WeekHeaderFooterBinder
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
@@ -66,7 +72,7 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
         binding.planningNoItemPlaceholder.isVisible = !mAllItemsDate.contains(value)
         setupRecyclerView()
     }
-    private var mAllItemsDate = ArrayList<LocalDate>()
+    private var mAllItemsDate: List<LocalDate> = emptyList()
 
     private lateinit var mEventAdapter: PlanningEventAdapter
 
@@ -99,7 +105,13 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
     }
 
     private fun setupDataObservers() {
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.allDatesWithItem.collect {
+                mAllItemsDate = it.map { date -> date.toLocaleDate() }
+                setupCalendarView()
+                setupRecyclerView()
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -200,7 +212,6 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
     }
 
     private fun setupRecyclerView() {
-        val hasItem = mAllItemsDate.contains(mSelectedDate)
         val selectedItems = viewModel.getItemForDate()
         if (this::mEventAdapter.isInitialized) {
             mEventAdapter.updateData(selectedItems)
@@ -256,6 +267,7 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
         val oldDate = mSelectedDate
         val newDate = LocalDate.of(year, getMonth(month + 1), day)
         mSelectedDate = newDate
+        viewModel.selectDate(mSelectedDate.toDate())
         binding.calendarView.apply {
             notifyDateChanged(oldDate)
             notifyDateChanged(mSelectedDate)
@@ -289,3 +301,4 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
 
 
 }
+

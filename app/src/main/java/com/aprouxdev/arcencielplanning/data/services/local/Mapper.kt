@@ -34,7 +34,7 @@ fun User.toUserDb(): UserDb {
 fun Event.toEventDb(): EventDb {
     return EventDb(
         id= this.id,
-        date = this.date.toString(),
+        date = this.date,
         time= this.time,
         team= this.team,
         users= this.users?.joinToString(","),
@@ -47,7 +47,7 @@ fun Event.toEventDb(): EventDb {
 fun EventDb.toEvent(): Event {
     return Event(
         id = this.id,
-        date = Date.from(Instant.parse(this.date)),
+        date = this.date,
         time = this.time,
         team = this.team,
         users = this.users?.split(","),
@@ -61,8 +61,18 @@ fun Alert.toAlertDb(): AlertDb {
     return AlertDb(
         id= this.id,
         body= this.body,
-        endDate= this.endDate.toString(),
+        endDate= this.endDate,
         title= this.title,
         type = this.type
     )
 }
+fun AlertDb.toAlert(): Alert {
+    return Alert(
+        id= this.id,
+        body= this.body,
+        endDate= this.endDate,
+        title= this.title,
+        type = this.type
+    )
+}
+

@@ -2,7 +2,9 @@ package com.aprouxdev.arcencielplanning.extensions
 
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 fun Date.formattedToString(pattern: String): String {
@@ -36,5 +38,8 @@ fun Int.toTimeString(): String {
 }
 
 fun LocalDate.toDate(): Date {
-    return Date(this.year, this.monthValue, this.dayOfMonth)
+    return Date.from(this.atStartOfDay(ZoneId.systemDefault()).toInstant())
+}
+fun Date.toLocaleDate(): LocalDate {
+    return this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 }
