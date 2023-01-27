@@ -74,6 +74,7 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
     }
     private var mAllItemsDate: List<LocalDate> = emptyList()
 
+    private var mSelectedEvents: List<Event> = emptyList()
     private lateinit var mEventAdapter: PlanningEventAdapter
 
 
@@ -109,6 +110,13 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
             viewModel.allDatesWithItem.collect {
                 mAllItemsDate = it.map { date -> date.toLocaleDate() }
                 setupCalendarView()
+                setupRecyclerView()
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.selectedEvents.collect {
+                Log.d("TAG_DEBUG", "setupDataObservers: size = ${it.size}")
+                mSelectedEvents = it
                 setupRecyclerView()
             }
         }
@@ -212,14 +220,13 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
     }
 
     private fun setupRecyclerView() {
-        val selectedItems = viewModel.getItemForDate()
         if (this::mEventAdapter.isInitialized) {
-            mEventAdapter.updateData(selectedItems)
+            mEventAdapter.updateData(mSelectedEvents)
         } else {
             with(binding.planningPlanningRecyclerview) {
                 layoutManager = LinearLayoutManager(context)
                 mEventAdapter = PlanningEventAdapter(context = context,
-                data = selectedItems,
+                data = mSelectedEvents,
                 listener = this@PlanningFragment
                 )
                 adapter = mEventAdapter
@@ -240,8 +247,6 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
                 datePickerFragment.show(childFragmentManager, DatePickerDialogFragment.TAG)
             }
             planningAddEventButton.setOnClickListener {
-                Log.d("TAG_DEBUG", "setupUiListeners: YEAR = ${mSelectedDate.year}")
-                //val date = Date(mSelectedDate.year, mSelectedDate.monthValue - 1, mSelectedDate.dayOfMonth)
                 val date = Calendar.getInstance().apply {
                     set(mSelectedDate.year, mSelectedDate.monthValue -1, mSelectedDate.dayOfMonth)
                 }
@@ -254,6 +259,7 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
     override fun onDaySelected(date: LocalDate) {
         val oldDate = mSelectedDate
         mSelectedDate = date
+        viewModel.selectDate(mSelectedDate.toDate())
         binding.calendarView.apply {
             notifyDateChanged(oldDate)
             notifyDateChanged(mSelectedDate)
@@ -267,7 +273,6 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
         val oldDate = mSelectedDate
         val newDate = LocalDate.of(year, getMonth(month + 1), day)
         mSelectedDate = newDate
-        viewModel.selectDate(mSelectedDate.toDate())
         binding.calendarView.apply {
             notifyDateChanged(oldDate)
             notifyDateChanged(mSelectedDate)
@@ -298,6 +303,10 @@ class PlanningFragment : Fragment(), OnCalendarCallback, DatePickerDialogCallbac
         }
     }
 
+    fun updateEventData() {
+        viewModel.getAllEvent()
+        viewModel.getItemForDate()
+    }
 
 
 }

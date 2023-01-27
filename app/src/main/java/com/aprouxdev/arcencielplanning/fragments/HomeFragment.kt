@@ -17,6 +17,7 @@ import com.aprouxdev.arcencielplanning.adapters.AlertAdapter
 import com.aprouxdev.arcencielplanning.adapters.AlertCallback
 import com.aprouxdev.arcencielplanning.adapters.HomeEventAdapter
 import com.aprouxdev.arcencielplanning.adapters.HomeEventListener
+import com.aprouxdev.arcencielplanning.data.mock.MockData
 import com.aprouxdev.arcencielplanning.data.models.Alert
 import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.databinding.FragmentHomeBinding
@@ -85,8 +86,9 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.eventList.collect {
-                mEventList = it
-                setupEventRecyclerView()
+                //mEventList = it
+                //TODO REMOVE AFTER TESTS
+                //setupEventRecyclerView()
             }
         }
 
@@ -115,6 +117,8 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
 
 
     private fun setupInformationRecyclerView() {
+        // TODO REPLACE AFTER TEST
+        mAlertList = listOf(MockData.alert1, MockData.alert2, MockData.alert3, MockData.alert4, MockData.alert5)
         binding.homeInformationRecyclerview.isVisible = mAlertList.isNotEmpty()
         binding.homeInformationPlaceholder.isVisible = mAlertList.isEmpty()
         if (this::mAlertAdapter.isInitialized) {
@@ -132,6 +136,7 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
 
 
     private fun setupEventRecyclerView() {
+        mEventList = listOf(MockData.event1, MockData.event2, MockData.event3, MockData.event4)
         binding.homeEventRecyclerviewContainer.isVisible = mEventList.isNotEmpty()
         binding.homeEventPlaceholder.isVisible = mEventList.isEmpty()
         if (this::mHomeEventContainerAdapter.isInitialized) {
@@ -199,6 +204,14 @@ class HomeFragment : Fragment(), AlertCallback, HomeEventListener {
     override fun onHomeEventClicked(event: Event) {
         val eventDetailModal = EventDetailModal.newInstance(event)
         eventDetailModal.present(childFragmentManager, EventDetailModal.TAG)
+    }
+
+    fun updateAlerts() {
+        viewModel.getAllAlert()
+    }
+
+    fun updateEventData() {
+        viewModel.getAllUserEvents()
     }
 
 }

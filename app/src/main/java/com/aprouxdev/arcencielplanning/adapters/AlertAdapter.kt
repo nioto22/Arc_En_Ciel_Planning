@@ -48,6 +48,7 @@ class AlertAdapter(var data: List<Alert>, private val listener: AlertCallback) :
 
             mIcon?.setImageDrawable(ContextCompat.getDrawable(context, item.getTypeByName().icon))
             mAlertTypeTv?.text = context.getString(item.getTypeByName().text)
+            mAlertTypeTv?.setTextColor(ContextCompat.getColor(context, item.getTypeByName().color))
 
             mAlertTitle?.text = item.title
             mAlertBody?.text = item.body

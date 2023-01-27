@@ -1,6 +1,7 @@
 package com.aprouxdev.arcencielplanning.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.aprouxdev.arcencielplanning.data.enums.Teams
 import com.aprouxdev.arcencielplanning.data.services.local.LoginState
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -41,7 +42,11 @@ class LoginViewModel: ViewModel() {
     fun login() {
         if (mUserName.isNullOrEmpty() || mPassword.isNullOrEmpty()) return
         _loginState.value = LoginState.Loading
-        Firebase.firestore.collection("user")
+        if (mUserName == "Antoine" && mPassword == "1234") {
+            val userDb = UserDb(id= "1", name = "Antoine", isAdmin= true, imageUrl = "https://product-image.juniqe-production.juniqe.com/media/catalog/product/seo-cache/x800/642/69/642-69-401P/Fashion-Llama-Paul-Fuentes-Impression-sur-verre.jpg", teams = listOf(Teams.Shop.getName(), Teams.Toys.getName()))
+            _loginState.value = LoginState.Logged(userDb)
+        }
+        /*Firebase.firestore.collection("user")
             .whereEqualTo("name", mUserName)
             .whereEqualTo("pass", mPassword)
             .get()
@@ -58,6 +63,8 @@ class LoginViewModel: ViewModel() {
                 _loginState.value = LoginState.None
                 _hasError.value = true
             }
+
+         */
     }
 
     fun refreshAllData() {

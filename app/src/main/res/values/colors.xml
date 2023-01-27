@@ -40,6 +40,8 @@
     <color name="green_validation">#79EC99</color>
     <color name="toy_blue">#4C9DD5</color>
     <color name="green_validation_transp">#8079EC99</color>
+    <color name="greys_200">#FFE9EBEC</color>
+    <color name="greys_20">#F2F5F7</color>
 
 
 </resources>

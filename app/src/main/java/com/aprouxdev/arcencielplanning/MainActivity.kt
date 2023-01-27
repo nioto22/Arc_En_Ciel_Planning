@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.aprouxdev.arcencielplanning.data.services.local.EventService
 import com.aprouxdev.arcencielplanning.databinding.ActivityMainBinding
 import com.aprouxdev.arcencielplanning.extensions.present
@@ -15,6 +17,9 @@ import com.aprouxdev.arcencielplanning.fragments.PlanningFragment
 import com.aprouxdev.arcencielplanning.modals.EventDetailModal
 import com.aprouxdev.arcencielplanning.modals.NewEventCallback
 import com.aprouxdev.arcencielplanning.modals.NewEventModal
+import com.aprouxdev.arcencielplanning.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), NewEventCallback {
@@ -27,6 +32,8 @@ class MainActivity : AppCompatActivity(), NewEventCallback {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = requireNotNull(_binding)
 
+    private lateinit var viewModel: MainViewModel
+
     private lateinit var mHomeFragment: HomeFragment
     private lateinit var mPlanningFragment: PlanningFragment
     private lateinit var mActiveFragment: Fragment
@@ -38,15 +45,43 @@ class MainActivity : AppCompatActivity(), NewEventCallback {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
         setTabButton(mCurrentTab)
         initializedFragments()
         setupBottomNavigationViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupDataObservers()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
+    //region DATA OBSERVERS
+
+    private fun setupDataObservers() {
+        lifecycleScope.launch {
+            viewModel.updateEvents.collect {
+                if (it) {
+                    mHomeFragment.updateEventData()
+                    mPlanningFragment.updateEventData()
+                }
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.updateAlerts.collect {
+                if (it) {
+                    mHomeFragment.updateAlerts()
+                }
+            }
+        }
+    }
+    //endregion
 
     //region UI METHODS
 

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="265dp"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_alert_container_assiduity"
-    android:layout_marginHorizontal="16dp"
-    >
+    android:layout_marginHorizontal="16dp">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -15,9 +14,10 @@
         android:padding="18dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/background_alert_title_white">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/alert_icon"
@@ -32,24 +32,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="12dp"
+                android:layout_marginHorizontal="8dp"
                 android:gravity="start"
+                android:fontFamily="@font/sf_pro_display_semibold"
                 android:text="Information générale"
-                android:textColor="@color/white"
+                android:textColor="#FFDBCC"
                 android:textSize="17sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/alert_title_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="start"
-            android:text="Fermeture du magasin"
+            android:gravity="center"
+            tools:text="Fermeture du magasin"
+            android:fontFamily="@font/sf_pro_display_semibold"
             android:lines="1"
             android:ellipsize="end"
-            android:textColor="@color/white"
-            android:textSize="22sp"
+            android:textColor="@color/greys_700"
+            android:textSize="19sp"
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -57,9 +59,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:gravity="start"
+            android:gravity="center"
             android:maxLines="2"
-            android:text="Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023 \n Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023"
+            android:fontFamily="@font/sf_pro_text_regular"
+            tools:text="Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023 \n Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023"
             android:textColor="@color/white"
             android:ellipsize="end"
             android:textStyle="bold"

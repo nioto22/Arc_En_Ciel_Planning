@@ -3,6 +3,8 @@ package com.aprouxdev.arcencielplanning.data.services.online
 import com.aprouxdev.arcencielplanning.data.models.Event
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 interface OnlineQueryCallback {
     fun onSuccessListener()
@@ -14,6 +16,7 @@ internal class EventOnlineService {
         val instance = EventOnlineService()
         val eventDatabase = Firebase.firestore.collection("event")
     }
+
 
     fun addEvent(event: Event, listener: OnlineQueryCallback) {
         val eventData = getMapData(event)

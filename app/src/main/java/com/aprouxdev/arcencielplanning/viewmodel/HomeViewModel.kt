@@ -37,12 +37,12 @@ class HomeViewModel: ViewModel() {
        userId = database.userDbQueries.getAllUserDbs().executeAsOneOrNull()?.id
     }
 
-    private fun getAllAlert() {
+    fun getAllAlert() {
         val alertList = AlertService.instance.getAllAlerts(Calendar.getInstance(Locale.getDefault()).time)
         _alertList.value = alertList
     }
 
-    private fun getAllUserEvents() {
+    fun getAllUserEvents() {
         val allEvent = EventService.instance
             .getAllEvents(Calendar.getInstance(Locale.getDefault()).time)
             .filter { it.users?.contains(userId) == true }

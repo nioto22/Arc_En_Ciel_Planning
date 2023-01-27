@@ -28,6 +28,15 @@ internal class EventService {
         return database.eventDbQueries
             .getAllEventOverDate(date)
             .executeAsList().map { it.toEvent() }
+    }
 
+    fun removeEvent(eventId: String) {
+        database.eventDbQueries.deleteEventDBById(eventId)
+    }
+    fun addEvent(event: Event) {
+        database.eventDbQueries.insertOrReplaceEventDB(event.toEventDb())
+    }
+    fun updateEvent(event: Event) {
+        database.eventDbQueries.insertOrReplaceEventDB(event.toEventDb())
     }
 }
