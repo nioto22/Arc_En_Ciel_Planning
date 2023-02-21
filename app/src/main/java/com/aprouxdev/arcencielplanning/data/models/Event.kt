@@ -10,7 +10,7 @@ import java.util.*
 
 
 class Event(
-    val id: String = getUuid(),
+    var id: String = getUuid(),
     var date: Date? = null,
     var time: String? = null,
     var team: String = "Général",

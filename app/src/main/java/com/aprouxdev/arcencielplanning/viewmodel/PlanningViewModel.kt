@@ -3,9 +3,11 @@ package com.aprouxdev.arcencielplanning.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aprouxdev.arcencielplanning.data.mock.MockData
 import com.aprouxdev.arcencielplanning.data.models.Event
 import com.aprouxdev.arcencielplanning.data.services.local.database
 import com.aprouxdev.arcencielplanning.data.services.local.toEvent
+import com.aprouxdev.arcencielplanning.data.services.local.toEventDb
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import comaprouxdevarcencielplanning.EventDb
@@ -40,10 +42,26 @@ class PlanningViewModel: ViewModel() {
     }
 
     fun getAllEvent() {
+        mockData()
         eventList = database.eventDbQueries
                 .getAllEventOverDate(Calendar.getInstance(Locale.getDefault()).time)
             .executeAsList().map { it.toEvent() }
         getAllDates()
+    }
+
+    private fun mockData() {
+        val mockEvents = listOf(MockData.event1, MockData.event2,
+            MockData.event3, MockData.event4,
+            MockData.event5, MockData.event6,
+            MockData.event7, MockData.event8
+        )
+        mockEvents.forEachIndexed { index, event ->
+            val now = Calendar.getInstance(Locale.getDefault())
+            now.add(Calendar.DAY_OF_YEAR, index)
+            event.date = now.time
+            event.id = now.time.toString()
+            database.eventDbQueries.insertOrReplaceEventDB(event.toEventDb())
+        }
     }
 
     private fun getAllDates() {

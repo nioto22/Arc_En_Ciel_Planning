@@ -24,19 +24,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_alert_icon"
+                android:layout_margin="1dp"
                 android:padding="4dp"
                 android:src="@drawable/ic_alert_info" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/alert_type_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="8dp"
-                android:gravity="start"
+                android:gravity="center"
                 android:fontFamily="@font/sf_pro_display_semibold"
-                android:text="Information générale"
-                android:textColor="#FFDBCC"
+                tools:text="Information générale"
+                android:textColor="#FF948F"
                 android:textSize="17sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -51,8 +52,7 @@
             android:lines="1"
             android:ellipsize="end"
             android:textColor="@color/greys_700"
-            android:textSize="19sp"
-            android:textStyle="bold" />
+            android:textSize="19sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/alert_body_tv"
@@ -61,11 +61,10 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:maxLines="2"
-            android:fontFamily="@font/sf_pro_text_regular"
+            android:fontFamily="@font/sf_pro_text_medium"
             tools:text="Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023 \n Le magasin sera fermé les samedis 23 Octobre et 16 Novembre 2023"
-            android:textColor="@color/white"
+            android:textColor="@color/greys_300"
             android:ellipsize="end"
-            android:textStyle="bold"
             android:textSize="17sp"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
