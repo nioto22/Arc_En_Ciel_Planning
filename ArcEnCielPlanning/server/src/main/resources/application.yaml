@@ -1,0 +1,13 @@
+ktor:
+  deployment:
+    port: 8080
+    host: 0.0.0.0
+  application:
+    modules:
+      - com.aprouxdev.arcencielplanning.ApplicationKt.module
+
+jwt:
+  secret: "your-secret-key-change-this-in-production"
+  issuer: "com.aprouxdev.arcencielplanning"
+  audience: "arcencielplanning-users"
+  realm: "ArcEnCielPlanning API"

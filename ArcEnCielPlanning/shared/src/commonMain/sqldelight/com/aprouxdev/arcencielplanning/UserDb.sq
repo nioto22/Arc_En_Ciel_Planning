@@ -1,0 +1,35 @@
+import kotlin.Boolean;
+
+CREATE TABLE UserDb (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    isAdmin INTEGER AS Boolean NOT NULL DEFAULT 0,
+    imageUrl TEXT,
+    teams TEXT NOT NULL  -- JSON serialized list of Teams
+);
+
+-- Queries
+getUserById:
+SELECT * FROM UserDb WHERE id = :id;
+
+getAllUsers:
+SELECT * FROM UserDb ORDER BY name ASC;
+
+getAdminUsers:
+SELECT * FROM UserDb WHERE isAdmin = 1;
+
+getUsersByTeam:
+SELECT * FROM UserDb WHERE teams LIKE '%' || :team || '%';
+
+insertOrReplace:
+INSERT OR REPLACE INTO UserDb
+VALUES (?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM UserDb WHERE id = :id;
+
+deleteAll:
+DELETE FROM UserDb;
+
+countUsers:
+SELECT COUNT(*) FROM UserDb;

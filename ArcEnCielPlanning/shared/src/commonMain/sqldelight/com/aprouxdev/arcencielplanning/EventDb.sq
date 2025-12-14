@@ -1,0 +1,54 @@
+import com.aprouxdev.arcencielplanning.domain.enums.Teams;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE EventDb (
+    id TEXT NOT NULL PRIMARY KEY,
+    date INTEGER AS Instant NOT NULL,
+    time TEXT NOT NULL,
+    team TEXT AS Teams NOT NULL,
+    users TEXT NOT NULL,  -- JSON serialized list
+    title TEXT,
+    description TEXT,
+    comments TEXT NOT NULL  -- JSON serialized list of comment IDs
+);
+
+-- Indexes for performance
+CREATE INDEX event_date_idx ON EventDb(date);
+CREATE INDEX event_team_idx ON EventDb(team);
+
+-- Queries
+getEventById:
+SELECT * FROM EventDb WHERE id = :id;
+
+getAllEventByDate:
+SELECT * FROM EventDb WHERE date = :date;
+
+getAllEventsAfterDate:
+SELECT * FROM EventDb WHERE date >= :date ORDER BY date ASC, time ASC;
+
+getAllEventsByDateRange:
+SELECT * FROM EventDb
+WHERE date >= :fromDate AND date <= :toDate
+ORDER BY date ASC, time ASC;
+
+getAllEventsByTeam:
+SELECT * FROM EventDb WHERE team = :team ORDER BY date ASC;
+
+getAllEvents:
+SELECT * FROM EventDb ORDER BY date ASC, time ASC;
+
+insertOrReplace:
+INSERT OR REPLACE INTO EventDb
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM EventDb WHERE id = :id;
+
+deleteAll:
+DELETE FROM EventDb;
+
+countEvents:
+SELECT COUNT(*) FROM EventDb;
+
+getDatesWithEvents:
+SELECT DISTINCT date FROM EventDb ORDER BY date ASC;

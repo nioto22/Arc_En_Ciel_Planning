@@ -1,0 +1,47 @@
+import com.aprouxdev.arcencielplanning.domain.enums.AlertType;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE AlertDb (
+    id TEXT NOT NULL PRIMARY KEY,
+    type TEXT AS AlertType NOT NULL,
+    title TEXT,
+    body TEXT,
+    endDate INTEGER AS Instant NOT NULL
+);
+
+-- Index for performance
+CREATE INDEX alert_end_date_idx ON AlertDb(endDate);
+
+-- Queries
+getAlertById:
+SELECT * FROM AlertDb WHERE id = :id;
+
+getAllAlerts:
+SELECT * FROM AlertDb ORDER BY endDate DESC;
+
+getActiveAlerts:
+SELECT * FROM AlertDb
+WHERE endDate >= :currentDate
+ORDER BY endDate ASC;
+
+getAlertsByType:
+SELECT * FROM AlertDb WHERE type = :type ORDER BY endDate DESC;
+
+insertOrReplace:
+INSERT OR REPLACE INTO AlertDb
+VALUES (?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM AlertDb WHERE id = :id;
+
+deleteAll:
+DELETE FROM AlertDb;
+
+deleteExpiredAlerts:
+DELETE FROM AlertDb WHERE endDate < :currentDate;
+
+countAlerts:
+SELECT COUNT(*) FROM AlertDb;
+
+countActiveAlerts:
+SELECT COUNT(*) FROM AlertDb WHERE endDate >= :currentDate;
