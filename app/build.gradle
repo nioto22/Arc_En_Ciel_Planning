@@ -75,6 +75,10 @@ dependencies {
     implementation "com.squareup.sqldelight:android-driver:1.5.3"
     implementation "com.squareup.sqldelight:coroutines-extensions-jvm:1.5.4"
 
+    // Volley
+    implementation "com.android.volley:volley:1.2.1"
+    implementation "com.google.code.gson:gson:2.10.1"
+
 }
 
 sqldelight {

@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.kizitonwose.calendar.view.WeekCalendarView
+            <com.kizitonwose.calendar.view.CalendarView
                 android:id="@+id/calendar_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

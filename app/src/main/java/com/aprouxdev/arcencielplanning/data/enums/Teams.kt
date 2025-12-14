@@ -18,8 +18,6 @@ enum class Teams {
         }
     }
 
-
-
     fun getColorRes(): Int {
         return when(this) {
             Clothes -> R.color.team_sorting
